@@ -3,1190 +3,1018 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Funções da Linguagem</title>
+    <title>Quiz de Potência e Energia Elétrica</title>
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --accent: #4895ef;
-            --background: #f8f9fa;
-            --text: #2b2d42;
-            --correct: #4cc9f0;
-            --incorrect: #f72585;
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            --option-bg: #ffffff;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
         }
         
         body {
-            background-color: var(--background);
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: var(--dark-color);
             line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
-            min-height: 100vh;
-            background-image: radial-gradient(circle at 10% 20%, rgba(200, 200, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 90%);
         }
         
         header {
             text-align: center;
             margin-bottom: 30px;
-            padding: 30px 0;
-            position: relative;
-        }
-        
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 2px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         h1 {
-            color: var(--secondary);
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin: 0;
+            font-size: 2.2rem;
         }
         
-        .description {
-            color: #6c757d;
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .game-container {
-            background-color: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 30px;
-            transition: var(--transition);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--dark-color);
         }
         
         .question-container {
-            margin-bottom: 25px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
         .question {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.2rem;
             margin-bottom: 20px;
-            color: var(--text);
-            line-height: 1.4;
-        }
-        
-        .example {
-            font-style: italic;
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-left: 4px solid var(--accent);
-            margin: 15px 0;
-            color: #495057;
-            border-radius: 0 8px 8px 0;
-            font-size: 1.05rem;
+            font-weight: 600;
         }
         
         .options {
             display: grid;
             grid-template-columns: 1fr;
             gap: 12px;
-            margin-top: 25px;
         }
         
         .option {
-            padding: 15px 20px;
-            background-color: var(--option-bg);
-            border: 2px solid #e9ecef;
+            padding: 15px;
+            border: 2px solid var(--light-color);
             border-radius: 8px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             font-size: 1rem;
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-        
-        .option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background-color: transparent;
-            transition: var(--transition);
         }
         
         .option:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-color: var(--accent);
-        }
-        
-        .option:hover::before {
-            background-color: var(--accent);
+            background-color: var(--light-color);
+            border-color: var(--primary-color);
         }
         
         .option.selected {
-            background-color: var(--accent);
-            border-color: var(--accent);
+            background-color: var(--primary-color);
             color: white;
-        }
-        
-        .option.selected::before {
-            background-color: white;
+            border-color: var(--primary-color);
         }
         
         .option.correct {
-            background-color: var(--correct);
-            border-color: var(--correct);
+            background-color: var(--success-color);
             color: white;
-            animation: pulse 0.5s;
+            border-color: var(--success-color);
         }
         
         .option.incorrect {
-            background-color: var(--incorrect);
-            border-color: var(--incorrect);
+            background-color: var(--accent-color);
             color: white;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
+            border-color: var(--accent-color);
         }
         
         .feedback {
-            margin-top: 25px;
-            padding: 20px;
+            margin-top: 20px;
+            padding: 15px;
             border-radius: 8px;
             display: none;
-            animation: fadeIn 0.5s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .feedback::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
         }
         
         .feedback.correct {
-            background-color: rgba(76, 201, 240, 0.1);
-            color: var(--correct);
-            border-left: 4px solid var(--correct);
+            background-color: rgba(46, 204, 113, 0.2);
+            border-left: 5px solid var(--success-color);
             display: block;
         }
         
         .feedback.incorrect {
-            background-color: rgba(247, 37, 133, 0.1);
-            color: var(--incorrect);
-            border-left: 4px solid var(--incorrect);
+            background-color: rgba(231, 76, 60, 0.2);
+            border-left: 5px solid var(--accent-color);
             display: block;
         }
         
-        .feedback-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .feedback-title svg {
-            width: 20px;
-            height: 20px;
-        }
-        
-        .explanation {
-            margin-top: 10px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        
         .next-btn {
-            background-color: var(--primary);
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 500;
-            margin-top: 25px;
-            transition: var(--transition);
-            display: none;
-            width: 100%;
-            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
+            font-weight: bold;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 20px auto 0;
         }
         
         .next-btn:hover {
-            background-color: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(67, 97, 238, 0.3);
-        }
-        
-        .next-btn:active {
-            transform: translateY(0);
-        }
-        
-        .score-container {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .score-value {
-            font-size: 1.4rem;
-            font-weight: 700;
+            background-color: var(--secondary-color);
         }
         
         .progress-container {
             width: 100%;
-            background-color: #e9ecef;
+            background-color: var(--light-color);
             border-radius: 10px;
-            margin: 25px 0;
+            margin-bottom: 20px;
             height: 10px;
-            overflow: hidden;
         }
         
         .progress-bar {
             height: 100%;
             border-radius: 10px;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            width: 0;
-            transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.5s ease;
         }
         
-        .start-screen, .end-screen {
+        .score-container {
             text-align: center;
-            padding: 40px 20px;
-            max-width: 600px;
-            margin: 0 auto;
-            animation: fadeIn 0.8s;
-        }
-        
-        .start-screen h2, .end-screen h2 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
-        
-        .start-screen p, .end-screen p {
-            color: #6c757d;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-        
-        .start-btn, .restart-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-top: 30px;
-            transition: var(--transition);
-            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
-        }
-        
-        .start-btn:hover, .restart-btn:hover {
-            background-color: var(--secondary);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .start-btn:active, .restart-btn:active {
-            transform: translateY(0);
-        }
-        
-        .final-score {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 30px 0;
-            color: var(--primary);
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .performance-message {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: rgba(67, 97, 238, 0.05);
-        }
-        
-        .hidden {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
             display: none;
         }
         
-        .function-tag {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-left: 10px;
-            background-color: var(--accent);
+        .restart-btn {
+            background-color: var(--warning-color);
             color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 20px auto;
+        }
+        
+        .restart-btn:hover {
+            background-color: #e67e22;
+        }
+        
+        .timer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
         }
         
         @media (max-width: 600px) {
-            body {
+            .container {
+                padding: 10px;
+            }
+            
+            header {
                 padding: 15px;
             }
             
             h1 {
-                font-size: 2rem;
-            }
-            
-            .game-container {
-                padding: 20px;
+                font-size: 1.8rem;
             }
             
             .question {
-                font-size: 1.15rem;
-            }
-            
-            .option {
-                padding: 12px 15px;
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Quiz Funções da Linguagem</h1>
-        <p class="description">Teste seus conhecimentos sobre as funções da linguagem segundo Roman Jakobson</p>
-    </header>
-    
-    <div id="start-screen" class="start-screen">
-        <h2>Bem-vindo ao Quiz!</h2>
-        <p>Este jogo contém perguntas sobre as seis funções da linguagem:</p>
-        <ul style="list-style-type: none; margin: 20px 0;">
-            <li>• <strong>Referencial (Denotativa)</strong> - Transmite informações objetivas</li>
-            <li>• <strong>Emotiva (Expressiva)</strong> - Expressa sentimentos do emissor</li>
-            <li>• <strong>Conativa (Apelativa)</strong> - Busca influenciar o receptor</li>
-            <li>• <strong>Fática</strong> - Mantém o canal de comunicação</li>
-            <li>• <strong>Metalinguística</strong> - Fala sobre a própria linguagem</li>
-            <li>• <strong>Poética</strong> - Valoriza a forma estética da mensagem</li>
-        </ul>
-        <p>Você terá que identificar qual função predomina em cada situação apresentada.</p>
-        <button id="start-btn" class="start-btn">Começar Quiz</button>
-    </div>
-    
-    <div id="game-screen" class="hidden">
+    <div class="container">
+        <header>
+            <h1>Quiz de Potência e Energia Elétrica</h1>
+            <p>Teste seus conhecimentos sobre conceitos elétricos fundamentais</p>
+        </header>
+        
+        <div class="game-info">
+            <div class="score">Pontuação: <span id="score">0</span></div>
+            <div class="timer" id="timer">30</div>
+        </div>
+        
         <div class="progress-container">
-            <div id="progress-bar" class="progress-bar"></div>
+            <div class="progress-bar" id="progress-bar"></div>
         </div>
         
-        <div class="game-container">
-            <div id="question-container" class="question-container">
-                <div id="question" class="question"></div>
-                <div id="example" class="example" style="display: none;"></div>
-                <div id="options" class="options"></div>
-                <div id="feedback" class="feedback">
-                    <div id="feedback-title" class="feedback-title"></div>
-                    <div id="explanation" class="explanation"></div>
-                </div>
-                <button id="next-btn" class="next-btn">Próxima Pergunta</button>
-            </div>
+        <div class="question-container" id="question-container">
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+            <div class="feedback" id="feedback"></div>
+            <button class="next-btn" id="next-btn">Próxima Pergunta</button>
         </div>
         
-        <div id="score-container" class="score-container">
-            Pontuação: <span id="score" class="score-value">0</span>/<span id="total-questions">0</span>
+        <div class="score-container" id="final-score-container">
+            <h2>Quiz Concluído!</h2>
+            <p>Sua pontuação final: <span id="final-score">0</span>/<span id="total-questions">0</span></p>
+            <button class="restart-btn" id="restart-btn">Jogar Novamente</button>
         </div>
-    </div>
-    
-    <div id="end-screen" class="end-screen hidden">
-        <h2>Quiz Concluído!</h2>
-        <div class="final-score">Sua pontuação: <span id="final-score">0</span>/<span id="final-total">0</span></div>
-        <div id="performance-message" class="performance-message"></div>
-        <button id="restart-btn" class="restart-btn">Jogar Novamente</button>
     </div>
 
     <script>
-        // Banco de questões expandido (50 questões)
+        // Banco de questões ampliado (50 questões)
         const questions = [
             {
-                question: "Qual função da linguagem predomina no seguinte texto: 'A temperatura média na cidade de São Paulo em janeiro é de 22°C'?",
+                question: "O que representa a potência elétrica?",
                 options: [
-                    "Função Referencial",
-                    "Função Emotiva",
-                    "Função Conativa",
-                    "Função Fática"
+                    "A quantidade total de energia consumida por um aparelho",
+                    "A taxa com que a energia elétrica é transformada em outras formas de energia",
+                    "A resistência elétrica de um componente",
+                    "A diferença de potencial entre dois pontos"
                 ],
-                correctAnswer: 0,
-                explanation: "O texto transmite uma informação objetiva sobre a realidade, sem expressar sentimentos ou tentar influenciar o receptor, caracterizando a função referencial."
+                answer: 1,
+                explanation: "A potência elétrica é definida como a taxa com a qual a energia elétrica é transformada em outras formas de energia (como luz, calor, energia mecânica) por unidade de tempo."
             },
             {
-                question: "Em uma propaganda que diz 'Não perca esta oportunidade! Compre agora e ganhe 30% de desconto!', qual função da linguagem está sendo utilizada?",
+                question: "Qual é a unidade padrão de potência elétrica?",
                 options: [
-                    "Função Metalinguística",
-                    "Função Conativa",
-                    "Função Poética",
-                    "Função Fática"
+                    "Volt (V)",
+                    "Ampère (A)",
+                    "Watt (W)",
+                    "Joule (J)"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto visa persuadir o receptor a realizar uma ação (comprar), utilizando a segunda pessoa e o imperativo, características da função conativa."
+                answer: 2,
+                explanation: "A unidade padrão de potência elétrica é o watt (W), onde 1 W equivale a 1 joule por segundo (1 W = 1 J/s)."
             },
             {
-                question: "Qual função da linguagem está presente no diálogo: 'Alô? Você está me ouvindo? A conexão está ruim...'?",
+                question: "Qual fórmula representa corretamente a potência elétrica em um circuito?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Emotiva",
-                    "Função Poética"
+                    "P = V / I",
+                    "P = V × I",
+                    "P = I / R",
+                    "P = V × R"
                 ],
-                correctAnswer: 1,
-                explanation: "O diálogo tem como objetivo principal verificar e manter o canal de comunicação, característica da função fática."
+                answer: 1,
+                explanation: "A potência em circuitos elétricos é calculada por P = V × I, onde V é a tensão (em volts) e I é a corrente (em amperes)."
             },
             {
-                question: "No poema 'No meio do caminho tinha uma pedra', de Carlos Drummond de Andrade, qual função da linguagem predomina?",
+                question: "Se uma lâmpada de 60W fica ligada por 5 horas, quanto de energia elétrica ela consome?",
                 options: [
-                    "Função Referencial",
-                    "Função Poética",
-                    "Função Metalinguística",
-                    "Função Conativa"
+                    "12 Wh",
+                    "60 Wh",
+                    "300 Wh",
+                    "3000 Wh"
                 ],
-                correctAnswer: 1,
-                explanation: "No texto poético, a mensagem é trabalhada de forma estética, com atenção especial à forma, ao ritmo e à sonoridade, caracterizando a função poética."
+                answer: 2,
+                explanation: "Energia = Potência × Tempo = 60W × 5h = 300Wh (watt-hora)."
             },
             {
-                question: "Em um dicionário, a definição 'Adjetivo: palavra que modifica o substantivo, expressando qualidade, característica ou estado' exemplifica qual função da linguagem?",
+                question: "Qual das seguintes fórmulas NÃO representa a potência elétrica?",
                 options: [
-                    "Função Emotiva",
-                    "Função Metalinguística",
-                    "Função Referencial",
-                    "Função Fática"
+                    "P = I² × R",
+                    "P = V² / R",
+                    "P = E / Δt",
+                    "P = R / V²"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando o que é um adjetivo), caracterizando a função metalinguística."
+                answer: 3,
+                explanation: "P = R / V² não é uma fórmula válida para cálculo de potência elétrica. As outras opções são fórmulas corretas derivadas da Lei de Ohm."
             },
             {
-                question: "Qual função da linguagem predomina na seguinte declaração: 'Estou extremamente feliz com essa conquista! Nunca imaginei que conseguiria!'?",
+                question: "Se três lâmpadas de 40W, 60W e 100W são ligadas por 6 horas, qual o trabalho total realizado?",
                 options: [
-                    "Função Referencial",
-                    "Função Emotiva",
-                    "Função Conativa",
-                    "Função Poética"
+                    "200 J",
+                    "1200 J",
+                    "4.32 × 10⁶ J",
+                    "7.2 × 10⁴ J"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto expressa claramente os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, características da função emotiva."
+                answer: 2,
+                explanation: "Potência total = 40 + 60 + 100 = 200W. Tempo = 6h = 21600s. Trabalho = P × Δt = 200W × 21600s = 4.32 × 10⁶ J."
             },
             {
-                question: "Em um manual de instruções que diz 'Para ligar o aparelho, pressione o botão vermelho por 3 segundos', qual função da linguagem está presente?",
+                question: "Qual é a principal vantagem das lâmpadas LED em comparação com as incandescentes?",
                 options: [
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática",
-                    "Função Poética"
+                    "São mais baratas para comprar",
+                    "Produzem mais calor",
+                    "São mais eficientes energeticamente",
+                    "Têm um espectro de cores mais limitado"
                 ],
-                correctAnswer: 0,
-                explanation: "O texto transmite informações objetivas sobre como operar o aparelho, sem expressar sentimentos ou tentar persuadir, caracterizando a função referencial."
+                answer: 2,
+                explanation: "As lâmpadas LED são até 80% mais eficientes que as incandescentes, transformando mais energia em luz e menos em calor."
             },
             {
-                question: "Qual função da linguagem predomina no seguinte trecho de uma campanha eleitoral: 'Vote no candidato X! Ele é a mudança que nosso país precisa!'?",
+                question: "Quantos joules há em 1 kWh?",
                 options: [
-                    "Função Emotiva",
-                    "Função Conativa",
-                    "Função Fática",
-                    "Função Metalinguística"
+                    "3.6 × 10³ J",
+                    "3.6 × 10⁶ J",
+                    "1.0 × 10³ J",
+                    "1.0 × 10⁶ J"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto tem como objetivo persuadir o receptor a realizar uma ação (votar no candidato), utilizando verbos no imperativo, característica da função conativa."
+                answer: 1,
+                explanation: "1 kWh = 1000W × 3600s = 3.6 × 10⁶ J (3.600.000 joules)."
             },
             {
-                question: "Na frase 'A palavra 'saudade' é um substantivo feminino que designa a sensação de falta de alguém ou algo', qual função da linguagem está sendo utilizada?",
+                question: "Se 25 lâmpadas de 40W cada são usadas 5 horas por dia durante 20 dias, qual o custo se o kWh custa R$ 0,40?",
                 options: [
-                    "Função Poética",
-                    "Função Metalinguística",
-                    "Função Referencial",
-                    "Função Emotiva"
+                    "R$ 20,00",
+                    "R$ 40,00",
+                    "R$ 60,00",
+                    "R$ 80,00"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (definindo uma palavra), caracterizando a função metalinguística."
+                answer: 1,
+                explanation: "Potência total = 25 × 40W = 1000W = 1kW. Tempo = 20 × 5 = 100h. Energia = 1kW × 100h = 100kWh. Custo = 100 × 0,40 = R$ 40,00."
             },
             {
-                question: "Qual função da linguagem está presente na seguinte interação: 'Oi, tudo bem? - Tudo sim, e com você? - Também, obrigado!'?",
+                question: "Qual é a vida útil típica de uma lâmpada LED em comparação com uma incandescente?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Conativa",
-                    "Função Poética"
+                    "Aproximadamente a mesma",
+                    "2-3 vezes maior",
+                    "5-10 vezes maior",
+                    "25-50 vezes maior"
                 ],
-                correctAnswer: 1,
-                explanation: "A conversa tem como principal objetivo estabelecer e manter o contato entre os interlocutores, sem transmitir informações substantivas, caracterizando a função fática."
+                answer: 3,
+                explanation: "Lâmpadas LED têm vida útil típica de 25.000-50.000 horas, enquanto incandescentes duram apenas 1.000-2.000 horas."
             },
             {
-                question: "Em um artigo científico que apresenta dados sobre o aquecimento global, qual função da linguagem predomina?",
+                question: "Qual fórmula representa a potência elétrica dissipada em um resistor?",
                 options: [
-                    "Função Emotiva",
-                    "Função Referencial",
-                    "Função Poética",
-                    "Função Conativa"
+                    "P = V × I",
+                    "P = I² × R",
+                    "P = V² / R",
+                    "Todas as anteriores"
                 ],
-                correctAnswer: 1,
-                explanation: "O artigo científico tem como objetivo principal transmitir informações objetivas sobre a realidade, caracterizando a função referencial."
+                answer: 3,
+                explanation: "Todas as fórmulas apresentadas são válidas para calcular a potência dissipada em um resistor, sendo derivadas da combinação da Lei de Ohm com a fórmula básica de potência."
             },
             {
-                question: "Qual função da linguagem predomina na letra da música: 'Eu te amo, você me faz tão bem, é como um sonho que eu não quero acordar'?",
+                question: "O que acontece com a potência dissipada em um resistor se a corrente que passa por ele dobra?",
                 options: [
-                    "Função Referencial",
-                    "Função Emotiva",
-                    "Função Fática",
-                    "Função Metalinguística"
+                    "Permanece a mesma",
+                    "Dobra",
+                    "Quadruplica",
+                    "Reduz pela metade"
                 ],
-                correctAnswer: 1,
-                explanation: "A letra expressa os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, caracterizando a função emotiva."
+                answer: 2,
+                explanation: "Pela fórmula P = I² × R, se a corrente dobra, a potência aumenta por um fator de 2² = 4 (quadruplica)."
             },
             {
-                question: "Em um anúncio que diz 'Ligue já para 0800-1234 e garanta seu desconto especial!', qual função da linguagem está sendo utilizada?",
+                question: "Qual é a eficiência aproximada de uma lâmpada incandescente na conversão de energia elétrica em luz?",
                 options: [
-                    "Função Metalinguística",
-                    "Função Conativa",
-                    "Função Poética",
-                    "Função Fática"
+                    "5-10%",
+                    "25-30%",
+                    "50-60%",
+                    "80-90%"
                 ],
-                correctAnswer: 1,
-                explanation: "O anúncio visa persuadir o receptor a realizar uma ação (ligar para o número), utilizando o imperativo, característica da função conativa."
+                answer: 0,
+                explanation: "Lâmpadas incandescentes convertem apenas 5-10% da energia elétrica em luz, sendo o restante dissipado como calor."
             },
             {
-                question: "Qual função da linguagem está presente no seguinte diálogo telefônico: 'Está me ouvindo? Acho que a linha está ruim... Pode repetir?'?",
+                question: "Qual é o principal fator que torna as lâmpadas LED mais econômicas a longo prazo?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Emotiva",
-                    "Função Poética"
+                    "Preço de compra mais baixo",
+                    "Maior produção de calor",
+                    "Menor consumo de energia para mesma luminosidade",
+                    "Facilidade de descarte"
                 ],
-                correctAnswer: 1,
-                explanation: "O diálogo tem como objetivo principal verificar e manter o canal de comunicação, característica da função fática."
+                answer: 2,
+                explanation: "A principal vantagem econômica dos LEDs é sua maior eficiência, consumindo menos energia para produzir a mesma quantidade de luz que outras tecnologias."
             },
             {
-                question: "Em um dicionário de rimas que apresenta 'Casa: rima com asa, rasa, brasa', qual função da linguagem predomina?",
+                question: "Se a tensão em um resistor dobra enquanto sua resistência permanece constante, o que acontece com a potência dissipada?",
                 options: [
-                    "Função Referencial",
-                    "Função Metalinguística",
-                    "Função Poética",
-                    "Função Conativa"
+                    "Permanece a mesma",
+                    "Dobra",
+                    "Quadruplica",
+                    "Reduz pela metade"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto utiliza a linguagem para falar sobre aspectos da própria linguagem (rimas), caracterizando a função metalinguística."
+                answer: 2,
+                explanation: "Pela fórmula P = V²/R, se a tensão dobra, a potência aumenta por um fator de 2² = 4 (quadruplica)."
             },
             {
-                question: "Qual função da linguagem predomina no seguinte trecho de um poema: 'As águas correm serenas, serenas, / E no céu, tão azul, como são belas'?",
+                question: "Qual das seguintes afirmações sobre energia elétrica está correta?",
                 options: [
-                    "Função Referencial",
-                    "Função Poética",
-                    "Função Fática",
-                    "Função Conativa"
+                    "Energia elétrica é a mesma coisa que potência elétrica",
+                    "Energia elétrica é a potência multiplicada pelo tempo",
+                    "A unidade de energia elétrica no SI é o watt",
+                    "Energia elétrica independe do tempo de uso"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto trabalha a mensagem de forma estética, com atenção especial à forma, ao ritmo e à sonoridade, caracterizando a função poética."
+                answer: 1,
+                explanation: "Energia elétrica é a quantidade total de energia consumida ou fornecida, calculada como potência multiplicada pelo tempo (E = P × Δt)."
             },
             {
-                question: "Em um relatório meteorológico que diz 'A previsão para amanhã é de chuva forte em toda a região', qual função da linguagem está presente?",
+                question: "Por que o fator de potência é importante em circuitos de corrente alternada?",
                 options: [
-                    "Função Emotiva",
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática"
+                    "Determina a cor do LED",
+                    "Indica a eficiência na utilização da energia elétrica",
+                    "Define a vida útil dos componentes",
+                    "Especifica a temperatura de operação"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto transmite informações objetivas sobre a realidade, sem expressar sentimentos ou tentar influenciar o receptor, caracterizando a função referencial."
+                answer: 1,
+                explanation: "O fator de potência (FP) indica a eficiência na utilização da energia elétrica. Um FP baixo significa que há mais energia reativa circulando, o que pode aumentar perdas na transmissão."
             },
             {
-                question: "Qual função da linguagem predomina no seguinte desabafo: 'Estou tão cansado dessa situação! Não aguento mais!'?",
+                question: "Como se calcula o custo de operação de um aparelho elétrico?",
                 options: [
-                    "Função Referencial",
-                    "Função Emotiva",
-                    "Função Conativa",
-                    "Função Poética"
+                    "Potência × Tempo × Custo por kWh",
+                    "Tensão × Corrente × Resistência",
+                    "Energia / Tempo",
+                    "Potência / Tensão"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto expressa claramente os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, caracterizando a função emotiva."
+                answer: 0,
+                explanation: "O custo de operação é calculado multiplicando a potência pelo tempo de uso e pelo custo por kWh (convertendo para kW se necessário)."
             },
             {
-                question: "Em uma placa que diz 'Pare!', qual função da linguagem está sendo utilizada?",
+                question: "Qual é a principal desvantagem ambiental das lâmpadas fluorescentes em comparação com LEDs?",
                 options: [
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática",
-                    "Função Metalinguística"
+                    "Consomem mais energia",
+                    "Contêm mercúrio, uma substância tóxica",
+                    "Produzem menos luz",
+                    "São mais difíceis de reciclar"
                 ],
-                correctAnswer: 1,
-                explanation: "A placa tem como objetivo fazer com que o receptor execute uma ação (parar o veículo), utilizando o imperativo, característica da função conativa."
+                answer: 1,
+                explanation: "As lâmpadas fluorescentes contêm mercúrio em sua composição, o que as torna potencialmente perigosas para o meio ambiente se não descartadas corretamente."
             },
             {
-                question: "Qual função da linguagem está presente na seguinte interação: 'Bom dia! Como você está? - Bom dia! Tudo bem, obrigado!'?",
+                question: "Se um chuveiro de 5500W funciona por 15 minutos diariamente durante 30 dias, qual o consumo mensal em kWh?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Emotiva",
-                    "Função Poética"
+                    "41,25 kWh",
+                    "82,50 kWh",
+                    "123,75 kWh",
+                    "247,50 kWh"
                 ],
-                correctAnswer: 1,
-                explanation: "A conversa tem como principal objetivo estabelecer o contato social entre os interlocutores, sem transmitir informações substantivas, caracterizando a função fática."
+                answer: 0,
+                explanation: "Potência = 5500W = 5,5kW. Tempo diário = 15min = 0,25h. Tempo mensal = 0,25h × 30 = 7,5h. Energia = 5,5kW × 7,5h = 41,25 kWh."
             },
             {
-                question: "Em um livro de gramática que explica 'O sujeito é o termo da oração que realiza ou sofre a ação expressa pelo verbo', qual função da linguagem predomina?",
+                question: "Qual é a relação entre a potência nominal e o consumo real de um aparelho elétrico?",
                 options: [
-                    "Função Poética",
-                    "Função Metalinguística",
-                    "Função Referencial",
-                    "Função Emotiva"
+                    "São sempre iguais",
+                    "A potência nominal é o máximo que o aparelho pode consumir",
+                    "O consumo real é sempre maior que a potência nominal",
+                    "Não há relação entre os dois conceitos"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando um conceito gramatical), caracterizando a função metalinguística."
+                answer: 1,
+                explanation: "A potência nominal representa o consumo máximo do aparelho em condições normais de uso. O consumo real pode ser menor dependendo da configuração ou uso."
             },
             {
-                question: "Qual função da linguagem predomina no seguinte trecho de uma música: 'O amor não tem rollback, é commit todo dia'?",
+                question: "Se um resistor de 100Ω dissipa 4W de potência, qual é a corrente que passa por ele?",
                 options: [
-                    "Função Referencial",
-                    "Função Poética",
-                    "Função Fática",
-                    "Função Conativa"
+                    "0,02 A",
+                    "0,2 A",
+                    "2 A",
+                    "20 A"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto trabalha a mensagem de forma criativa e estética, utilizando metáforas e jogos de palavras, caracterizando a função poética."
+                answer: 1,
+                explanation: "Usando P = I² × R → I = √(P/R) = √(4/100) = √0,04 = 0,2 A."
             },
             {
-                question: "Em uma notícia que informa 'O PIB do país cresceu 1,2% no último trimestre', qual função da linguagem está presente?",
+                question: "Qual é a principal diferença entre potência ativa e potência aparente em circuitos AC?",
                 options: [
-                    "Função Emotiva",
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática"
+                    "Potência ativa é medida em watts e potência aparente em volt-ampères",
+                    "São conceitos idênticos com nomes diferentes",
+                    "Potência ativa considera apenas a resistência, enquanto aparente considera indutância e capacitância",
+                    "Potência ativa é CC e aparente é CA"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto transmite informações objetivas sobre a realidade, sem expressar sentimentos ou tentar influenciar o receptor, caracterizando a função referencial."
+                answer: 0,
+                explanation: "Em circuitos AC, a potência ativa (real, em watts) é a que realiza trabalho útil, enquanto a potência aparente (em VA) inclui também a energia reativa."
             },
             {
-                question: "Qual função da linguagem predomina no seguinte depoimento: 'Nunca me senti tão realizado profissionalmente como agora!'?",
+                question: "Qual é o efeito de ligar vários aparelhos em uma mesma tomada com extensão?",
                 options: [
-                    "Função Referencial",
-                    "Função Emotiva",
-                    "Função Conativa",
-                    "Função Poética"
+                    "Aumenta a resistência total do circuito",
+                    "Pode causar sobrecarga se a corrente total exceder a capacidade da fiação",
+                    "Reduz o consumo individual de cada aparelho",
+                    "Nenhum efeito significativo"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto expressa claramente os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, caracterizando a função emotiva."
+                answer: 1,
+                explanation: "Ligar muitos aparelhos em uma mesma tomada aumenta a corrente total, podendo superar a capacidade da fiação e causar superaquecimento ou até incêndios."
             },
             {
-                question: "Em um comando que diz 'Digite sua senha e pressione Enter para continuar', qual função da linguagem está sendo utilizada?",
+                question: "Qual é a vantagem de corrigir o fator de potência em uma instalação industrial?",
                 options: [
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática",
-                    "Função Metalinguística"
+                    "Reduz o consumo total de energia",
+                    "Diminui as perdas na transmissão e evita multas da concessionária",
+                    "Aumenta a tensão disponível para os equipamentos",
+                    "Permite usar fios de menor bitola"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto tem como objetivo fazer com que o receptor execute uma ação (digitar a senha), utilizando o imperativo, característica da função conativa."
+                answer: 1,
+                explanation: "A correção do fator de potência reduz a energia reativa circulante, diminuindo perdas e evitando penalidades financeiras das concessionárias de energia."
             },
             {
-                question: "Qual função da linguagem está presente no seguinte diálogo: 'Você está aí? - Estou sim, pode falar'?",
+                question: "Se uma lâmpada LED de 9W substitui uma incandescente de 60W com mesma luminosidade, qual a economia percentual aproximada?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Emotiva",
-                    "Função Poética"
+                    "15%",
+                    "35%",
+                    "65%",
+                    "85%"
                 ],
-                correctAnswer: 1,
-                explanation: "O diálogo tem como objetivo principal verificar e manter o canal de comunicação, característica da função fática."
+                answer: 3,
+                explanation: "Economia = (60-9)/60 × 100 = 51/60 × 100 ≈ 85%. LEDs são muito mais eficientes que lâmpadas incandescentes."
             },
             {
-                question: "Em um texto que explica 'Metáfora é uma figura de linguagem que estabelece uma comparação implícita', qual função da linguagem predomina?",
+                question: "Qual é o significado físico do efeito Joule?",
                 options: [
-                    "Função Poética",
-                    "Função Metalinguística",
-                    "Função Referencial",
-                    "Função Emotiva"
+                    "Conversão de energia mecânica em elétrica",
+                    "Dissipação de energia elétrica na forma de calor em resistores",
+                    "Produção de luz em lâmpadas fluorescentes",
+                    "Armazenamento de energia em campos magnéticos"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando uma figura de linguagem), caracterizando a função metalinguística."
+                answer: 1,
+                explanation: "O efeito Joule descreve a transformação de energia elétrica em calor quando a corrente passa por um material resistivo, como em aquecedores ou filamentos de lâmpadas."
             },
             {
-                question: "Qual função da linguagem predomina no seguinte verso de poema: 'O rio que passa correndo e conta a sua história'?",
+                question: "Qual é o consumo mensal aproximado de uma geladeira de 150W que fica ligada 8 horas por dia?",
                 options: [
-                    "Função Referencial",
-                    "Função Poética",
-                    "Função Fática",
-                    "Função Conativa"
+                    "12 kWh",
+                    "36 kWh",
+                    "72 kWh",
+                    "120 kWh"
                 ],
-                correctAnswer: 1,
-                explanation: "O verso trabalha a mensagem de forma estética, utilizando personificação e ritmo, caracterizando a função poética."
+                answer: 1,
+                explanation: "150W = 0,15kW. Tempo = 8h/dia × 30dias = 240h. Energia = 0,15 × 240 = 36 kWh."
             },
             {
-                question: "Em um boletim médico que informa 'O paciente apresenta febre de 38,5°C e taquicardia', qual função da linguagem está presente?",
+                question: "Por que as lâmpadas incandescentes estão sendo banidas em muitos países?",
                 options: [
-                    "Função Emotiva",
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática"
+                    "Porque produzem luz de má qualidade",
+                    "Devido à sua baixa eficiência energética",
+                    "Porque contêm materiais radioativos",
+                    "Porque são muito caras para produzir"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto transmite informações objetivas sobre o estado do paciente, sem expressar sentimentos ou tentar influenciar, caracterizando a função referencial."
+                answer: 1,
+                explanation: "As lâmpadas incandescentes convertem apenas 5-10% da energia em luz, sendo extremamente ineficientes. Seu banimento visa reduzir o consumo energético global."
             },
             {
-                question: "Qual função da linguagem predomina no seguinte desabafo nas redes sociais: 'Estou tão decepcionado com essa situação! Precisava desabafar!'?",
+                question: "Qual é a relação entre a potência de um chuveiro elétrico e o disjuntor necessário para protegê-lo?",
                 options: [
-                    "Função Referencial",
-                    "Função Emotiva",
-                    "Função Conativa",
-                    "Função Poética"
+                    "O disjuntor deve ter corrente nominal igual à potência do chuveiro",
+                    "O disjuntor deve suportar a corrente calculada por I = P/V",
+                    "Não há relação direta entre os dois",
+                    "O disjuntor deve ter potência igual à do chuveiro"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto expressa claramente os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, caracterizando a função emotiva."
+                answer: 1,
+                explanation: "A corrente do circuito é calculada por I = P/V. O disjuntor deve ser dimensionado para esta corrente, com uma margem de segurança."
             },
             {
-                question: "Em um outdoor que diz 'Proteja a natureza - ela é o nosso maior tesouro!', qual função da linguagem está sendo utilizada?",
+                question: "Se a resistência de um circuito dobra enquanto a tensão permanece constante, o que acontece com a potência?",
                 options: [
-                    "Função Metalinguística",
-                    "Função Conativa",
-                    "Função Poética",
-                    "Função Fática"
+                    "Dobra",
+                    "Quadruplica",
+                    "Reduz à metade",
+                    "Permanece igual"
                 ],
-                correctAnswer: 1,
-                explanation: "O outdoor visa persuadir o receptor a adotar um comportamento (proteger a natureza), caracterizando a função conativa."
+                answer: 2,
+                explanation: "Pela fórmula P = V²/R, se R dobra, P se reduz à metade (são inversamente proporcionais)."
             },
             {
-                question: "Qual função da linguagem está presente no seguinte diálogo: 'Você me escuta? Acho que a ligação está caindo... - Sim, estou te ouvindo'?",
+                question: "Qual é a principal razão para o uso de lâmpadas LED em iluminação pública?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Emotiva",
-                    "Função Poética"
+                    "Custo inicial mais baixo",
+                    "Maior produção de calor",
+                    "Redução do consumo energético e manutenção",
+                    "Facilidade de descarte"
                 ],
-                correctAnswer: 1,
-                explanation: "O diálogo tem como objetivo principal verificar e manter o canal de comunicação, característica da função fática."
+                answer: 2,
+                explanation: "LEDs reduzem drasticamente o consumo de energia e têm vida útil muito longa, diminuindo custos operacionais e frequência de substituição."
             },
             {
-                question: "Em um texto que explica 'Sinônimos são palavras diferentes que possuem significados semelhantes', qual função da linguagem predomina?",
+                question: "Qual é a corrente que passa por uma lâmpada de 60W ligada em 120V?",
                 options: [
-                    "Função Poética",
-                    "Função Metalinguística",
-                    "Função Referencial",
-                    "Função Emotiva"
+                    "0,5 A",
+                    "2 A",
+                    "5 A",
+                    "7,2 A"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando o conceito de sinônimos), caracterizando a função metalinguística."
+                answer: 0,
+                explanation: "P = V × I → I = P/V = 60/120 = 0,5 A."
             },
             {
-                question: "Qual função da linguagem predomina no seguinte trecho de música: 'Como é difícil acordar calado, se na calada da noite eu me dano'?",
+                question: "Qual é a resistência de uma lâmpada de 100W projetada para 220V?",
                 options: [
-                    "Função Referencial",
-                    "Função Poética",
-                    "Função Fática",
-                    "Função Conativa"
+                    "22 Ω",
+                    "44 Ω",
+                    "220 Ω",
+                    "484 Ω"
                 ],
-                correctAnswer: 1,
-                explanation: "O trecho trabalha a mensagem de forma estética, com atenção especial à forma, ao ritmo e à sonoridade, caracterizando a função poética."
+                answer: 3,
+                explanation: "P = V²/R → R = V²/P = 220²/100 = 48400/100 = 484 Ω."
             },
             {
-                question: "Em um relatório científico que apresenta 'Os resultados indicam uma correlação positiva entre as variáveis X e Y', qual função da linguagem está presente?",
+                question: "Qual é o custo anual de deixar uma TV de 80W em standby (consumo de 5W) 24h por dia, com kWh a R$0,50?",
                 options: [
-                    "Função Emotiva",
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática"
+                    "R$ 10,95",
+                    "R$ 21,90",
+                    "R$ 43,80",
+                    "R$ 87,60"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto transmite informações objetivas sobre os resultados da pesquisa, sem expressar sentimentos ou tentar influenciar, caracterizando a função referencial."
+                answer: 1,
+                explanation: "5W = 0,005kW. Tempo = 24h/dia × 365dias = 8760h. Energia = 0,005 × 8760 = 43,8 kWh. Custo = 43,8 × 0,50 = R$ 21,90."
             },
             {
-                question: "Em um poema que diz 'As palavras são asas que voam além do tempo', qual função da linguagem predomina?",
+                question: "Qual é a vantagem de usar lâmpadas de menor potência em paralelo em vez de uma de alta potência?",
                 options: [
-                    "Função Referencial",
-                    "Função Poética",
-                    "Função Fática",
-                    "Função Conativa"
+                    "Reduz a corrente total do circuito",
+                    "Aumenta a resistência total",
+                    "Proporciona redundância (se uma queimar, as outras continuam funcionando)",
+                    "Diminui o consumo total de energia"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto trabalha a mensagem de forma estética, utilizando metáforas e valorizando a forma, caracterizando a função poética."
+                answer: 2,
+                explanation: "Em paralelo, cada lâmpada funciona independentemente. Se uma queimar, as outras continuam acesas, ao contrário de uma configuração em série."
             },
             {
-                question: "Qual função da linguagem está presente em um tutorial que explica 'Para criar um link em HTML, use a tag <a> com o atributo href'?",
+                question: "Qual é o consumo diário de um ar-condicionado de 1200W que funciona 6 horas por dia?",
                 options: [
-                    "Função Metalinguística",
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Emotiva"
+                    "2,4 kWh",
+                    "4,8 kWh",
+                    "7,2 kWh",
+                    "9,6 kWh"
                 ],
-                correctAnswer: 0,
-                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (no caso, a linguagem HTML), caracterizando a função metalinguística."
+                answer: 2,
+                explanation: "1200W = 1,2kW. Energia = 1,2 × 6 = 7,2 kWh."
             },
             {
-                question: "Em um diálogo que começa com 'Você pode me ouvir? Está tudo bem com a conexão?', qual função da linguagem predomina?",
+                question: "Qual é a relação entre a potência de um aparelho e o tempo de uso em relação ao consumo de energia?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Conativa",
-                    "Função Poética"
+                    "O consumo é diretamente proporcional à potência e ao tempo de uso",
+                    "O consumo é inversamente proporcional à potência",
+                    "O consumo depende apenas da potência, não do tempo",
+                    "O consumo depende apenas do tempo, não da potência"
                 ],
-                correctAnswer: 1,
-                explanation: "O diálogo tem como objetivo verificar e manter o canal de comunicação, característica da função fática."
+                answer: 0,
+                explanation: "O consumo de energia (E) é calculado por E = P × t, sendo diretamente proporcional tanto à potência (P) quanto ao tempo de uso (t)."
             },
             {
-                question: "Qual função da linguagem predomina em um artigo enciclopédico sobre a Revolução Francesa?",
+                question: "Por que os cabos de alimentação de aparelhos de alta potência são mais grossos?",
                 options: [
-                    "Função Emotiva",
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Poética"
+                    "Para suportar maior corrente sem superaquecer",
+                    "Para aumentar a resistência do circuito",
+                    "Para diminuir a tensão no aparelho",
+                    "Para reduzir o consumo de energia"
                 ],
-                correctAnswer: 1,
-                explanation: "O artigo tem como objetivo principal transmitir informações objetivas sobre um fato histórico, caracterizando a função referencial."
+                answer: 0,
+                explanation: "Cabos mais grossos têm menor resistência e podem transportar correntes maiores sem aquecer excessivamente, prevenindo riscos de incêndio."
             },
             {
-                question: "Em um discurso político que diz 'Precisamos da sua ajuda para construir um país melhor!', qual função da linguagem está sendo utilizada?",
+                question: "Qual é a potência dissipada por um resistor de 10Ω quando percorrido por uma corrente de 3A?",
                 options: [
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática",
-                    "Função Metalinguística"
+                    "3,3 W",
+                    "30 W",
+                    "90 W",
+                    "900 W"
                 ],
-                correctAnswer: 1,
-                explanation: "O discurso visa persuadir o receptor a apoiar uma causa, caracterizando a função conativa."
+                answer: 2,
+                explanation: "P = I² × R = 3² × 10 = 9 × 10 = 90 W."
             },
             {
-                question: "Qual função da linguagem predomina em um post de rede social que diz 'Hoje acordei me sentindo incrível! O dia está lindo e estou cheio de energia!'?",
+                question: "Qual é a diferença principal entre potência nominal e potência real de um aparelho?",
                 options: [
-                    "Função Referencial",
-                    "Função Emotiva",
-                    "Função Conativa",
-                    "Função Fática"
+                    "A potência nominal é medida em condições ideais, a real em uso normal",
+                    "São conceitos idênticos",
+                    "A potência real é sempre maior que a nominal",
+                    "A potência nominal considera apenas a energia reativa"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto expressa os sentimentos e estado emocional do emissor, caracterizando a função emotiva."
+                answer: 0,
+                explanation: "A potência nominal é especificada pelo fabricante em condições padrão, enquanto a potência real pode variar conforme as condições de uso."
             },
             {
-                question: "Em um livro didático que explica 'O verbo é a palavra que indica ação, estado ou fenômeno da natureza', qual função da linguagem está presente?",
+                question: "Qual é a corrente que passa por um ferro elétrico de 1100W ligado em 220V?",
                 options: [
-                    "Função Poética",
-                    "Função Metalinguística",
-                    "Função Referencial",
-                    "Função Emotiva"
+                    "0,2 A",
+                    "2 A",
+                    "5 A",
+                    "20 A"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando o que é um verbo), caracterizando a função metalinguística."
+                answer: 2,
+                explanation: "P = V × I → I = P/V = 1100/220 = 5 A."
             },
             {
-                question: "Qual função da linguagem predomina em um manual de primeiros socorros que diz 'Em caso de queimadura, lave o local com água corrente por 10 minutos'?",
+                question: "Qual é a resistência de um chuveiro elétrico de 5500W em 220V?",
                 options: [
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática",
-                    "Função Poética"
+                    "4 Ω",
+                    "8,8 Ω",
+                    "25 Ω",
+                    "40 Ω"
                 ],
-                correctAnswer: 0,
-                explanation: "O manual transmite informações objetivas sobre procedimentos, sem expressar sentimentos ou tentar persuadir, caracterizando a função referencial."
+                answer: 1,
+                explanation: "P = V²/R → R = V²/P = 220²/5500 = 48400/5500 = 8,8 Ω."
             },
             {
-                question: "Em um poema concreto que brinca com a disposição visual das palavras na página, qual função da linguagem é mais evidente?",
+                question: "Qual é o consumo mensal de um ventilador de 50W ligado 8 horas por dia?",
                 options: [
-                    "Função Referencial",
-                    "Função Poética",
-                    "Função Fática",
-                    "Função Metalinguística"
+                    "1,2 kWh",
+                    "4,8 kWh",
+                    "12 kWh",
+                    "48 kWh"
                 ],
-                correctAnswer: 1,
-                explanation: "No poema concreto, a forma visual e estética da mensagem é tão importante quanto o conteúdo, caracterizando fortemente a função poética."
+                answer: 2,
+                explanation: "50W = 0,05kW. Tempo = 8h/dia × 30dias = 240h. Energia = 0,05 × 240 = 12 kWh."
             },
             {
-                question: "Qual função da linguagem predomina em um diálogo que começa com 'Oi, tudo bem? Faz tempo que não nos falamos!'?",
+                question: "Qual é a potência de um aparelho que consome 2A em 127V?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Emotiva",
-                    "Função Conativa"
+                    "63,5 W",
+                    "127 W",
+                    "254 W",
+                    "508 W"
                 ],
-                correctAnswer: 1,
-                explanation: "O diálogo tem como objetivo principal estabelecer e manter o contato entre os interlocutores, caracterizando a função fática."
+                answer: 2,
+                explanation: "P = V × I = 127 × 2 = 254 W."
             },
             {
-                question: "Em um discurso que diz 'Nossa nação precisa se unir agora mais do que nunca!', qual função da linguagem está sendo utilizada?",
+                question: "Qual é a vantagem de usar tensões mais altas na transmissão de energia elétrica?",
                 options: [
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática",
-                    "Função Metalinguística"
+                    "Permite usar fios mais finos para a mesma potência",
+                    "Aumenta a segurança contra choques elétricos",
+                    "Reduz a necessidade de transformadores",
+                    "Diminui a potência transmitida"
                 ],
-                correctAnswer: 1,
-                explanation: "O discurso visa persuadir o receptor a adotar um comportamento (unir-se), caracterizando a função conativa."
+                answer: 0,
+                explanation: "Para uma dada potência (P = V × I), tensões mais altas permitem correntes menores, reduzindo as perdas por efeito Joule e permitindo fios mais finos."
             },
             {
-                question: "Qual função da linguagem predomina em um texto autobiográfico que descreve as emoções do autor durante um evento importante?",
+                question: "Qual é a eficiência aproximada de uma lâmpada fluorescente compacta (LFC)?",
                 options: [
-                    "Função Referencial",
-                    "Função Emotiva",
-                    "Função Poética",
-                    "Função Fática"
+                    "5-10%",
+                    "25-30%",
+                    "50-60%",
+                    "75-80%"
                 ],
-                correctAnswer: 1,
-                explanation: "O texto expressa os sentimentos e experiências subjetivas do autor, caracterizando a função emotiva."
+                answer: 1,
+                explanation: "Lâmpadas fluorescentes têm eficiência de 25-30%, significativamente melhor que incandescentes (5-10%) mas inferior aos LEDs (até 80%)."
             },
             {
-                question: "Em uma aula de português onde o professor explica 'A crase é a fusão da preposição 'a' com o artigo 'a'', qual função da linguagem está presente?",
+                question: "Qual é a potência dissipada por um resistor de 100Ω ligado a uma bateria de 12V?",
                 options: [
-                    "Função Poética",
-                    "Função Metalinguística",
-                    "Função Referencial",
-                    "Função Emotiva"
+                    "0,12 W",
+                    "1,44 W",
+                    "12 W",
+                    "144 W"
                 ],
-                correctAnswer: 1,
-                explanation: "A explicação utiliza a linguagem para falar sobre a própria linguagem (explicando o fenômeno da crase), caracterizando a função metalinguística."
+                answer: 1,
+                explanation: "P = V²/R = 12²/100 = 144/100 = 1,44 W."
             },
             {
-                question: "Qual função da linguagem predomina em um relatório técnico sobre os resultados de um experimento científico?",
+                question: "Qual é o tempo máximo que um aquecedor de 1500W pode funcionar em uma tomada de 10A/127V sem risco?",
                 options: [
-                    "Função Emotiva",
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Poética"
+                    "Não há limite de tempo",
+                    "Até 1 hora contínua",
+                    "Até 8 horas contínuas",
+                    "Depende da resistência do aquecedor"
                 ],
-                correctAnswer: 1,
-                explanation: "O relatório tem como objetivo principal transmitir informações objetivas sobre os resultados, caracterizando a função referencial."
+                answer: 0,
+                explanation: "1500W em 127V consome I = P/V = 1500/127 ≈ 11,8A, que excede a capacidade da tomada de 10A. Portanto, não deve ser usado nesta tomada."
             },
             {
-                question: "Em um slogan publicitário que diz 'Experimente já e sinta a diferença!', qual função da linguagem está sendo utilizada?",
+                question: "Qual é a corrente que passa por três lâmpadas de 60W cada, ligadas em paralelo em 120V?",
                 options: [
-                    "Função Referencial",
-                    "Função Conativa",
-                    "Função Fática",
-                    "Função Metalinguística"
+                    "0,5 A",
+                    "1,5 A",
+                    "3 A",
+                    "6 A"
                 ],
-                correctAnswer: 1,
-                explanation: "O slogan visa persuadir o receptor a realizar uma ação (experimentar o produto), caracterizando a função conativa."
+                answer: 1,
+                explanation: "Cada lâmpada consome I = P/V = 60/120 = 0,5A. Em paralelo, a corrente total é a soma: 0,5 × 3 = 1,5A."
             },
             {
-                question: "Qual função da linguagem predomina em um bate-papo inicial entre duas pessoas que começam a conversar com 'Oi, como vai? - Tudo bem, e você?'?",
+                question: "Qual é a resistência equivalente de três resistores de 30Ω ligados em paralelo?",
                 options: [
-                    "Função Referencial",
-                    "Função Fática",
-                    "Função Emotiva",
-                    "Função Poética"
+                    "10 Ω",
+                    "30 Ω",
+                    "60 Ω",
+                    "90 Ω"
                 ],
-                correctAnswer: 1,
-                explanation: "A conversa tem como objetivo principal estabelecer o contato entre os interlocutores, caracterizando a função fática."
+                answer: 0,
+                explanation: "Resistência em paralelo: 1/R = 1/30 + 1/30 + 1/30 = 3/30 = 1/10 → R = 10Ω."
+            },
+            {
+                question: "Qual é a potência total consumida por três lâmpadas de 40W, 60W e 100W ligadas em paralelo a 120V?",
+                options: [
+                    "40 W",
+                    "60 W",
+                    "100 W",
+                    "200 W"
+                ],
+                answer: 3,
+                explanation: "Em paralelo, as potências se somam: 40 + 60 + 100 = 200W."
+            },
+            {
+                question: "Qual é a principal razão para a perda de energia na transmissão de eletricidade?",
+                options: [
+                    "Efeito Joule nos cabos de transmissão",
+                    "Vazamento de corrente para o ar",
+                    "Absorção de energia pelos postes",
+                    "Conversão espontânea em energia luminosa"
+                ],
+                answer: 0,
+                explanation: "As principais perdas ocorrem pelo efeito Joule (P = I²R) nos cabos, que transforma parte da energia elétrica em calor."
             }
         ];
 
         // Variáveis do jogo
         let currentQuestionIndex = 0;
         let score = 0;
+        let timeLeft = 30;
+        let timer;
         let shuffledQuestions = [];
-        let userAnswers = [];
-        
+        let selectedOption = null;
+        let answerSubmitted = false;
+
         // Elementos do DOM
-        const startScreen = document.getElementById('start-screen');
-        const gameScreen = document.getElementById('game-screen');
-        const endScreen = document.getElementById('end-screen');
-        const startBtn = document.getElementById('start-btn');
-        const restartBtn = document.getElementById('restart-btn');
         const questionElement = document.getElementById('question');
-        const exampleElement = document.getElementById('example');
         const optionsElement = document.getElementById('options');
         const feedbackElement = document.getElementById('feedback');
-        const feedbackTitle = document.getElementById('feedback-title');
-        const explanationElement = document.getElementById('explanation');
-        const nextBtn = document.getElementById('next-btn');
+        const nextButton = document.getElementById('next-btn');
         const scoreElement = document.getElementById('score');
-        const totalQuestionsElement = document.getElementById('total-questions');
-        const progressBar = document.getElementById('progress-bar');
         const finalScoreElement = document.getElementById('final-score');
-        const finalTotalElement = document.getElementById('final-total');
-        const performanceMessage = document.getElementById('performance-message');
-        
-        // Event Listeners
-        startBtn.addEventListener('click', startGame);
-        restartBtn.addEventListener('click', restartGame);
-        nextBtn.addEventListener('click', nextQuestion);
-        
-        // Função para iniciar o jogo
-        function startGame() {
-            startScreen.classList.add('hidden');
-            gameScreen.classList.remove('hidden');
-            
-            // Embaralhar questões
-            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
-            
-            // Limitar a 20 questões para não ficar muito longo
-            if (shuffledQuestions.length > 20) {
-                shuffledQuestions = shuffledQuestions.slice(0, 20);
-            }
-            
-            currentQuestionIndex = 0;
-            score = 0;
-            userAnswers = [];
-            
-            updateScore();
-            showQuestion();
-        }
-        
-        // Função para mostrar a questão atual
-        function showQuestion() {
-            const question = shuffledQuestions[currentQuestionIndex];
-            questionElement.textContent = question.question;
-            
-            // Limpar opções anteriores
-            optionsElement.innerHTML = '';
-            
-            // Embaralhar as opções de resposta
-            const shuffledOptions = [...question.options];
-            const correctAnswerText = shuffledOptions[question.correctAnswer];
-            
-            // Embaralhar mantendo controle da resposta correta
-            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const finalScoreContainer = document.getElementById('final-score-container');
+        const questionContainer = document.getElementById('question-container');
+        const progressBar = document.getElementById('progress-bar');
+        const timerElement = document.getElementById('timer');
+        const restartButton = document.getElementById('restart-btn');
+
+        // Função para embaralhar array (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+                [array[i], array[j]] = [array[j], array[i]];
             }
+            return array;
+        }
+
+        // Iniciar o jogo
+        function startGame() {
+            score = 0;
+            currentQuestionIndex = 0;
+            scoreElement.textContent = score;
+            shuffledQuestions = shuffleArray([...questions]).slice(0, 10); // Seleciona 10 perguntas aleatórias
+            totalQuestionsElement.textContent = shuffledQuestions.length;
             
-            // Atualizar o índice da resposta correta após embaralhar
-            const newCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
+            finalScoreContainer.style.display = 'none';
+            questionContainer.style.display = 'block';
             
-            // Adicionar novas opções
-            shuffledOptions.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.classList.add('option');
-                button.textContent = option;
-                button.addEventListener('click', () => selectOption(index, newCorrectIndex));
-                optionsElement.appendChild(button);
-            });
+            loadQuestion();
+            startTimer();
+        }
+
+        // Carregar pergunta
+        function loadQuestion() {
+            resetState();
+            const currentQuestion = shuffledQuestions[currentQuestionIndex];
             
             // Atualizar barra de progresso
-            progressBar.style.width = `${((currentQuestionIndex) / shuffledQuestions.length) * 100}%`;
+            const progress = ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
             
-            // Esconder feedback e próximo botão
-            feedbackElement.classList.remove('correct', 'incorrect');
-            feedbackElement.style.display = 'none';
-            nextBtn.style.display = 'none';
+            // Exibir pergunta
+            questionElement.textContent = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
+            
+            // Embaralhar e exibir opções
+            const shuffledOptions = shuffleArray([...currentQuestion.options]);
+            
+            shuffledOptions.forEach((option, index) => {
+                const button = document.createElement('div');
+                button.classList.add('option');
+                button.textContent = option;
+                button.dataset.index = currentQuestion.options.indexOf(option); // Guarda o índice original
+                button.addEventListener('click', () => selectOption(button));
+                optionsElement.appendChild(button);
+            });
         }
-        
-        // Função para selecionar uma opção
-        function selectOption(selectedIndex, correctIndex) {
-            const options = document.querySelectorAll('.option');
+
+        // Resetar estado para nova pergunta
+        function resetState() {
+            answerSubmitted = false;
+            selectedOption = null;
+            timeLeft = 30;
+            timerElement.textContent = timeLeft;
+            clearInterval(timer);
+            startTimer();
             
-            // Desabilitar todas as opções
-            options.forEach(option => {
-                option.disabled = true;
+            while (optionsElement.firstChild) {
+                optionsElement.removeChild(optionsElement.firstChild);
+            }
+            
+            feedbackElement.textContent = '';
+            feedbackElement.className = 'feedback';
+            nextButton.style.display = 'none';
+        }
+
+        // Selecionar opção
+        function selectOption(button) {
+            if (answerSubmitted) return;
+            
+            // Desselecionar opção anterior se existir
+            if (selectedOption) {
+                selectedOption.classList.remove('selected');
+            }
+            
+            // Selecionar nova opção
+            selectedOption = button;
+            button.classList.add('selected');
+        }
+
+        // Verificar resposta
+        function checkAnswer() {
+            if (!selectedOption || answerSubmitted) return;
+            
+            answerSubmitted = true;
+            clearInterval(timer);
+            
+            const currentQuestion = shuffledQuestions[currentQuestionIndex];
+            const selectedAnswer = parseInt(selectedOption.dataset.index);
+            const correctAnswer = currentQuestion.answer;
+            
+            // Marcar opções
+            const optionElements = document.querySelectorAll('.option');
+            optionElements.forEach(option => {
+                const optionIndex = parseInt(option.dataset.index);
+                if (optionIndex === correctAnswer) {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && optionIndex !== correctAnswer) {
+                    option.classList.add('incorrect');
+                }
             });
             
-            // Marcar a resposta correta
-            options[correctIndex].classList.add('correct');
-            
-            // Verificar se a resposta está correta
-            if (selectedIndex === correctIndex) {
-                options[selectedIndex].classList.add('correct');
-                feedbackTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg> Resposta Correta!`;
-                feedbackElement.classList.add('correct');
+            // Atualizar pontuação e feedback
+            if (selectedAnswer === correctAnswer) {
                 score++;
+                scoreElement.textContent = score;
+                feedbackElement.textContent = `✅ Correto! ${currentQuestion.explanation}`;
+                feedbackElement.classList.add('correct');
             } else {
-                options[selectedIndex].classList.add('incorrect');
-                feedbackTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> Resposta Incorreta`;
+                feedbackElement.textContent = `❌ Incorreto. A resposta correta é: ${currentQuestion.options[correctAnswer]}. ${currentQuestion.explanation}`;
                 feedbackElement.classList.add('incorrect');
             }
             
-            // Adicionar explicação
-            explanationElement.textContent = shuffledQuestions[currentQuestionIndex].explanation;
-            
-            // Mostrar feedback e próximo botão
-            feedbackElement.style.display = 'block';
-            nextBtn.style.display = 'block';
-            
-            // Atualizar pontuação
-            updateScore();
-            
-            // Registrar resposta do usuário
-            const questionObj = shuffledQuestions[currentQuestionIndex];
-            userAnswers.push({
-                question: questionObj.question,
-                userAnswer: questionObj.options[selectedIndex],
-                correctAnswer: questionObj.options[questionObj.correctAnswer],
-                isCorrect: selectedIndex === correctIndex
-            });
+            nextButton.style.display = 'block';
         }
-        
-        // Função para ir para a próxima questão
+
+        // Próxima pergunta
         function nextQuestion() {
             currentQuestionIndex++;
             
             if (currentQuestionIndex < shuffledQuestions.length) {
-                showQuestion();
+                loadQuestion();
             } else {
                 endGame();
             }
         }
-        
-        // Função para atualizar a pontuação
-        function updateScore() {
-            scoreElement.textContent = score;
-            totalQuestionsElement.textContent = shuffledQuestions.length;
-        }
-        
-        // Função para finalizar o jogo
+
+        // Finalizar jogo
         function endGame() {
-            gameScreen.classList.add('hidden');
-            endScreen.classList.remove('hidden');
-            
+            clearInterval(timer);
+            questionContainer.style.display = 'none';
+            finalScoreContainer.style.display = 'block';
             finalScoreElement.textContent = score;
-            finalTotalElement.textContent = shuffledQuestions.length;
-            
-            // Mensagem de desempenho
-            const percentage = (score / shuffledQuestions.length) * 100;
-            if (percentage >= 90) {
-                performanceMessage.textContent = 'Excelente! Você demonstrou domínio completo das funções da linguagem. Parabéns!';
-            } else if (percentage >= 70) {
-                performanceMessage.textContent = 'Muito bom! Você tem um ótimo entendimento das funções da linguagem, com apenas alguns pontos para revisar.';
-            } else if (percentage >= 50) {
-                performanceMessage.textContent = 'Bom trabalho! Você conhece o básico, mas pode melhorar. Revise as características de cada função.';
-            } else {
-                performanceMessage.textContent = 'Continue estudando! As funções da linguagem são essenciais para a análise textual. Recomendo revisar o material e tentar novamente.';
+        }
+
+        // Temporizador
+        function startTimer() {
+            timerElement.textContent = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (!answerSubmitted) {
+                        checkAnswer(); // Submete automaticamente quando o tempo acaba
+                    }
+                }
+            }, 1000);
+        }
+
+        // Event listeners
+        nextButton.addEventListener('click', nextQuestion);
+        optionsElement.addEventListener('click', (e) => {
+            if (e.target.classList.contains('option') && !answerSubmitted) {
+                checkAnswer();
             }
-        }
-        
-        // Função para reiniciar o jogo
-        function restartGame() {
-            endScreen.classList.add('hidden');
-            startGame();
-        }
+        });
+        restartButton.addEventListener('click', startGame);
+
+        // Iniciar o jogo quando a página carrega
+        window.addEventListener('load', startGame);
     </script>
 </body>
 </html>
