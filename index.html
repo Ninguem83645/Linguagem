@@ -6,21 +6,23 @@
     <title>Quiz Funções da Linguagem</title>
     <style>
         :root {
-            --primary: #4a6fa5;
-            --secondary: #166088;
-            --accent: #4fc3f7;
-            --background: #f5f7fa;
-            --text: #333;
-            --correct: #4caf50;
-            --incorrect: #f44336;
-            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4895ef;
+            --background: #f8f9fa;
+            --text: #2b2d42;
+            --correct: #4cc9f0;
+            --incorrect: #f72585;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --option-bg: #ffffff;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
         }
         
         body {
@@ -28,89 +30,136 @@
             color: var(--text);
             line-height: 1.6;
             padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 10% 20%, rgba(200, 200, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 90%);
         }
         
         header {
             text-align: center;
             margin-bottom: 30px;
-            padding: 20px 0;
-            border-bottom: 2px solid var(--accent);
+            padding: 30px 0;
+            position: relative;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
         }
         
         h1 {
             color: var(--secondary);
             margin-bottom: 10px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .description {
-            color: #666;
+            color: #6c757d;
             font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
         }
         
         .game-container {
             background-color: white;
-            border-radius: 10px;
-            padding: 25px;
+            border-radius: 15px;
+            padding: 30px;
             box-shadow: var(--card-shadow);
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .question-container {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .question {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--secondary);
+            margin-bottom: 20px;
+            color: var(--text);
+            line-height: 1.4;
         }
         
         .example {
             font-style: italic;
             background-color: #f8f9fa;
-            padding: 10px;
-            border-left: 3px solid var(--accent);
-            margin: 10px 0;
-            color: #555;
+            padding: 15px;
+            border-left: 4px solid var(--accent);
+            margin: 15px 0;
+            color: #495057;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.05rem;
         }
         
         .options {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 25px;
         }
         
         .option {
-            padding: 12px 15px;
-            background-color: white;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            padding: 15px 20px;
+            background-color: var(--option-bg);
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             font-size: 1rem;
             text-align: left;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: transparent;
+            transition: var(--transition);
         }
         
         .option:hover {
-            background-color: #f0f7ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             border-color: var(--accent);
+        }
+        
+        .option:hover::before {
+            background-color: var(--accent);
         }
         
         .option.selected {
             background-color: var(--accent);
-            border-color: var(--secondary);
+            border-color: var(--accent);
             color: white;
+        }
+        
+        .option.selected::before {
+            background-color: white;
         }
         
         .option.correct {
             background-color: var(--correct);
             border-color: var(--correct);
             color: white;
+            animation: pulse 0.5s;
         }
         
         .option.incorrect {
@@ -119,120 +168,226 @@
             color: white;
         }
         
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
         .feedback {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
             display: none;
+            animation: fadeIn 0.5s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feedback::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
         }
         
         .feedback.correct {
-            background-color: #e8f5e9;
+            background-color: rgba(76, 201, 240, 0.1);
             color: var(--correct);
             border-left: 4px solid var(--correct);
             display: block;
         }
         
         .feedback.incorrect {
-            background-color: #ffebee;
+            background-color: rgba(247, 37, 133, 0.1);
             color: var(--incorrect);
             border-left: 4px solid var(--incorrect);
             display: block;
         }
         
+        .feedback-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .feedback-title svg {
+            width: 20px;
+            height: 20px;
+        }
+        
         .explanation {
             margin-top: 10px;
             font-size: 0.95rem;
+            line-height: 1.5;
         }
         
         .next-btn {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
+            padding: 15px 30px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            margin-top: 20px;
-            transition: background-color 0.3s;
+            font-weight: 500;
+            margin-top: 25px;
+            transition: var(--transition);
             display: none;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
         }
         
         .next-btn:hover {
             background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(67, 97, 238, 0.3);
+        }
+        
+        .next-btn:active {
+            transform: translateY(0);
         }
         
         .score-container {
             text-align: center;
             margin-top: 20px;
             font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 600;
             color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .score-value {
+            font-size: 1.4rem;
+            font-weight: 700;
         }
         
         .progress-container {
             width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin: 20px 0;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            margin: 25px 0;
             height: 10px;
+            overflow: hidden;
         }
         
         .progress-bar {
             height: 100%;
-            border-radius: 5px;
-            background-color: var(--primary);
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
             width: 0;
-            transition: width 0.4s ease;
+            transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
         }
         
         .start-screen, .end-screen {
             text-align: center;
-            padding: 30px;
+            padding: 40px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s;
+        }
+        
+        .start-screen h2, .end-screen h2 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .start-screen p, .end-screen p {
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
         }
         
         .start-btn, .restart-btn {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 5px;
+            padding: 15px 40px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1.1rem;
+            font-weight: 500;
             margin-top: 30px;
-            transition: background-color 0.3s;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
         }
         
         .start-btn:hover, .restart-btn:hover {
             background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(67, 97, 238, 0.3);
         }
         
-        .end-screen h2 {
-            color: var(--secondary);
-            margin-bottom: 20px;
+        .start-btn:active, .restart-btn:active {
+            transform: translateY(0);
         }
         
         .final-score {
-            font-size: 1.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 30px 0;
             color: var(--primary);
-            margin: 20px 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .performance-message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: rgba(67, 97, 238, 0.05);
         }
         
         .hidden {
             display: none;
         }
         
+        .function-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+            background-color: var(--accent);
+            color: white;
+        }
+        
         @media (max-width: 600px) {
             body {
-                padding: 10px;
-            }
-            
-            .game-container {
                 padding: 15px;
             }
             
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .game-container {
+                padding: 20px;
+            }
+            
             .question {
-                font-size: 1.1rem;
+                font-size: 1.15rem;
+            }
+            
+            .option {
+                padding: 12px 15px;
             }
         }
     </style>
@@ -247,14 +402,14 @@
         <h2>Bem-vindo ao Quiz!</h2>
         <p>Este jogo contém perguntas sobre as seis funções da linguagem:</p>
         <ul style="list-style-type: none; margin: 20px 0;">
-            <li>• Referencial (Denotativa)</li>
-            <li>• Emotiva (Expressiva)</li>
-            <li>• Conativa (Apelativa)</li>
-            <li>• Fática</li>
-            <li>• Metalinguística</li>
-            <li>• Poética</li>
+            <li>• <strong>Referencial (Denotativa)</strong> - Transmite informações objetivas</li>
+            <li>• <strong>Emotiva (Expressiva)</strong> - Expressa sentimentos do emissor</li>
+            <li>• <strong>Conativa (Apelativa)</strong> - Busca influenciar o receptor</li>
+            <li>• <strong>Fática</strong> - Mantém o canal de comunicação</li>
+            <li>• <strong>Metalinguística</strong> - Fala sobre a própria linguagem</li>
+            <li>• <strong>Poética</strong> - Valoriza a forma estética da mensagem</li>
         </ul>
-        <p>Você terá que identificar qual função predomina em cada situação.</p>
+        <p>Você terá que identificar qual função predomina em cada situação apresentada.</p>
         <button id="start-btn" class="start-btn">Começar Quiz</button>
     </div>
     
@@ -268,25 +423,28 @@
                 <div id="question" class="question"></div>
                 <div id="example" class="example" style="display: none;"></div>
                 <div id="options" class="options"></div>
-                <div id="feedback" class="feedback"></div>
+                <div id="feedback" class="feedback">
+                    <div id="feedback-title" class="feedback-title"></div>
+                    <div id="explanation" class="explanation"></div>
+                </div>
                 <button id="next-btn" class="next-btn">Próxima Pergunta</button>
             </div>
         </div>
         
         <div id="score-container" class="score-container">
-            Pontuação: <span id="score">0</span>/<span id="total-questions">0</span>
+            Pontuação: <span id="score" class="score-value">0</span>/<span id="total-questions">0</span>
         </div>
     </div>
     
     <div id="end-screen" class="end-screen hidden">
         <h2>Quiz Concluído!</h2>
-        <div class="final-score">Sua pontuação final: <span id="final-score">0</span>/<span id="final-total">0</span></div>
-        <p id="performance-message"></p>
+        <div class="final-score">Sua pontuação: <span id="final-score">0</span>/<span id="final-total">0</span></div>
+        <div id="performance-message" class="performance-message"></div>
         <button id="restart-btn" class="restart-btn">Jogar Novamente</button>
     </div>
 
     <script>
-        // Banco de questões extenso
+        // Banco de questões expandido (50 questões)
         const questions = [
             {
                 question: "Qual função da linguagem predomina no seguinte texto: 'A temperatura média na cidade de São Paulo em janeiro é de 22°C'?",
@@ -672,6 +830,182 @@
                 ],
                 correctAnswer: 1,
                 explanation: "O texto transmite informações objetivas sobre os resultados da pesquisa, sem expressar sentimentos ou tentar influenciar, caracterizando a função referencial."
+            },
+            {
+                question: "Em um poema que diz 'As palavras são asas que voam além do tempo', qual função da linguagem predomina?",
+                options: [
+                    "Função Referencial",
+                    "Função Poética",
+                    "Função Fática",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto trabalha a mensagem de forma estética, utilizando metáforas e valorizando a forma, caracterizando a função poética."
+            },
+            {
+                question: "Qual função da linguagem está presente em um tutorial que explica 'Para criar um link em HTML, use a tag <a> com o atributo href'?",
+                options: [
+                    "Função Metalinguística",
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Emotiva"
+                ],
+                correctAnswer: 0,
+                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (no caso, a linguagem HTML), caracterizando a função metalinguística."
+            },
+            {
+                question: "Em um diálogo que começa com 'Você pode me ouvir? Está tudo bem com a conexão?', qual função da linguagem predomina?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Conativa",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O diálogo tem como objetivo verificar e manter o canal de comunicação, característica da função fática."
+            },
+            {
+                question: "Qual função da linguagem predomina em um artigo enciclopédico sobre a Revolução Francesa?",
+                options: [
+                    "Função Emotiva",
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O artigo tem como objetivo principal transmitir informações objetivas sobre um fato histórico, caracterizando a função referencial."
+            },
+            {
+                question: "Em um discurso político que diz 'Precisamos da sua ajuda para construir um país melhor!', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática",
+                    "Função Metalinguística"
+                ],
+                correctAnswer: 1,
+                explanation: "O discurso visa persuadir o receptor a apoiar uma causa, caracterizando a função conativa."
+            },
+            {
+                question: "Qual função da linguagem predomina em um post de rede social que diz 'Hoje acordei me sentindo incrível! O dia está lindo e estou cheio de energia!'?",
+                options: [
+                    "Função Referencial",
+                    "Função Emotiva",
+                    "Função Conativa",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto expressa os sentimentos e estado emocional do emissor, caracterizando a função emotiva."
+            },
+            {
+                question: "Em um livro didático que explica 'O verbo é a palavra que indica ação, estado ou fenômeno da natureza', qual função da linguagem está presente?",
+                options: [
+                    "Função Poética",
+                    "Função Metalinguística",
+                    "Função Referencial",
+                    "Função Emotiva"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando o que é um verbo), caracterizando a função metalinguística."
+            },
+            {
+                question: "Qual função da linguagem predomina em um manual de primeiros socorros que diz 'Em caso de queimadura, lave o local com água corrente por 10 minutos'?",
+                options: [
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática",
+                    "Função Poética"
+                ],
+                correctAnswer: 0,
+                explanation: "O manual transmite informações objetivas sobre procedimentos, sem expressar sentimentos ou tentar persuadir, caracterizando a função referencial."
+            },
+            {
+                question: "Em um poema concreto que brinca com a disposição visual das palavras na página, qual função da linguagem é mais evidente?",
+                options: [
+                    "Função Referencial",
+                    "Função Poética",
+                    "Função Fática",
+                    "Função Metalinguística"
+                ],
+                correctAnswer: 1,
+                explanation: "No poema concreto, a forma visual e estética da mensagem é tão importante quanto o conteúdo, caracterizando fortemente a função poética."
+            },
+            {
+                question: "Qual função da linguagem predomina em um diálogo que começa com 'Oi, tudo bem? Faz tempo que não nos falamos!'?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Emotiva",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "O diálogo tem como objetivo principal estabelecer e manter o contato entre os interlocutores, caracterizando a função fática."
+            },
+            {
+                question: "Em um discurso que diz 'Nossa nação precisa se unir agora mais do que nunca!', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática",
+                    "Função Metalinguística"
+                ],
+                correctAnswer: 1,
+                explanation: "O discurso visa persuadir o receptor a adotar um comportamento (unir-se), caracterizando a função conativa."
+            },
+            {
+                question: "Qual função da linguagem predomina em um texto autobiográfico que descreve as emoções do autor durante um evento importante?",
+                options: [
+                    "Função Referencial",
+                    "Função Emotiva",
+                    "Função Poética",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto expressa os sentimentos e experiências subjetivas do autor, caracterizando a função emotiva."
+            },
+            {
+                question: "Em uma aula de português onde o professor explica 'A crase é a fusão da preposição 'a' com o artigo 'a'', qual função da linguagem está presente?",
+                options: [
+                    "Função Poética",
+                    "Função Metalinguística",
+                    "Função Referencial",
+                    "Função Emotiva"
+                ],
+                correctAnswer: 1,
+                explanation: "A explicação utiliza a linguagem para falar sobre a própria linguagem (explicando o fenômeno da crase), caracterizando a função metalinguística."
+            },
+            {
+                question: "Qual função da linguagem predomina em um relatório técnico sobre os resultados de um experimento científico?",
+                options: [
+                    "Função Emotiva",
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O relatório tem como objetivo principal transmitir informações objetivas sobre os resultados, caracterizando a função referencial."
+            },
+            {
+                question: "Em um slogan publicitário que diz 'Experimente já e sinta a diferença!', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática",
+                    "Função Metalinguística"
+                ],
+                correctAnswer: 1,
+                explanation: "O slogan visa persuadir o receptor a realizar uma ação (experimentar o produto), caracterizando a função conativa."
+            },
+            {
+                question: "Qual função da linguagem predomina em um bate-papo inicial entre duas pessoas que começam a conversar com 'Oi, como vai? - Tudo bem, e você?'?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Emotiva",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "A conversa tem como objetivo principal estabelecer o contato entre os interlocutores, caracterizando a função fática."
             }
         ];
 
@@ -691,6 +1025,8 @@
         const exampleElement = document.getElementById('example');
         const optionsElement = document.getElementById('options');
         const feedbackElement = document.getElementById('feedback');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const explanationElement = document.getElementById('explanation');
         const nextBtn = document.getElementById('next-btn');
         const scoreElement = document.getElementById('score');
         const totalQuestionsElement = document.getElementById('total-questions');
@@ -712,9 +1048,9 @@
             // Embaralhar questões
             shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
             
-            // Limitar a 15 questões para não ficar muito longo
-            if (shuffledQuestions.length > 15) {
-                shuffledQuestions = shuffledQuestions.slice(0, 15);
+            // Limitar a 20 questões para não ficar muito longo
+            if (shuffledQuestions.length > 20) {
+                shuffledQuestions = shuffledQuestions.slice(0, 20);
             }
             
             currentQuestionIndex = 0;
@@ -733,12 +1069,25 @@
             // Limpar opções anteriores
             optionsElement.innerHTML = '';
             
+            // Embaralhar as opções de resposta
+            const shuffledOptions = [...question.options];
+            const correctAnswerText = shuffledOptions[question.correctAnswer];
+            
+            // Embaralhar mantendo controle da resposta correta
+            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
+            
+            // Atualizar o índice da resposta correta após embaralhar
+            const newCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
+            
             // Adicionar novas opções
-            question.options.forEach((option, index) => {
+            shuffledOptions.forEach((option, index) => {
                 const button = document.createElement('button');
                 button.classList.add('option');
                 button.textContent = option;
-                button.addEventListener('click', () => selectOption(index));
+                button.addEventListener('click', () => selectOption(index, newCorrectIndex));
                 optionsElement.appendChild(button);
             });
             
@@ -752,8 +1101,7 @@
         }
         
         // Função para selecionar uma opção
-        function selectOption(selectedIndex) {
-            const question = shuffledQuestions[currentQuestionIndex];
+        function selectOption(selectedIndex, correctIndex) {
             const options = document.querySelectorAll('.option');
             
             // Desabilitar todas as opções
@@ -762,25 +1110,22 @@
             });
             
             // Marcar a resposta correta
-            options[question.correctAnswer].classList.add('correct');
+            options[correctIndex].classList.add('correct');
             
             // Verificar se a resposta está correta
-            if (selectedIndex === question.correctAnswer) {
+            if (selectedIndex === correctIndex) {
                 options[selectedIndex].classList.add('correct');
-                feedbackElement.textContent = 'Resposta Correta!';
+                feedbackTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg> Resposta Correta!`;
                 feedbackElement.classList.add('correct');
                 score++;
             } else {
                 options[selectedIndex].classList.add('incorrect');
-                feedbackElement.textContent = 'Resposta Incorreta';
+                feedbackTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> Resposta Incorreta`;
                 feedbackElement.classList.add('incorrect');
             }
             
             // Adicionar explicação
-            const explanation = document.createElement('div');
-            explanation.classList.add('explanation');
-            explanation.textContent = question.explanation;
-            feedbackElement.appendChild(explanation);
+            explanationElement.textContent = shuffledQuestions[currentQuestionIndex].explanation;
             
             // Mostrar feedback e próximo botão
             feedbackElement.style.display = 'block';
@@ -790,11 +1135,12 @@
             updateScore();
             
             // Registrar resposta do usuário
+            const questionObj = shuffledQuestions[currentQuestionIndex];
             userAnswers.push({
-                question: question.question,
-                userAnswer: question.options[selectedIndex],
-                correctAnswer: question.options[question.correctAnswer],
-                isCorrect: selectedIndex === question.correctAnswer
+                question: questionObj.question,
+                userAnswer: questionObj.options[selectedIndex],
+                correctAnswer: questionObj.options[questionObj.correctAnswer],
+                isCorrect: selectedIndex === correctIndex
             });
         }
         
@@ -825,12 +1171,14 @@
             
             // Mensagem de desempenho
             const percentage = (score / shuffledQuestions.length) * 100;
-            if (percentage >= 80) {
-                performanceMessage.textContent = 'Excelente! Você demonstrou um ótimo conhecimento sobre as funções da linguagem.';
+            if (percentage >= 90) {
+                performanceMessage.textContent = 'Excelente! Você demonstrou domínio completo das funções da linguagem. Parabéns!';
+            } else if (percentage >= 70) {
+                performanceMessage.textContent = 'Muito bom! Você tem um ótimo entendimento das funções da linguagem, com apenas alguns pontos para revisar.';
             } else if (percentage >= 50) {
-                performanceMessage.textContent = 'Bom trabalho! Você tem um conhecimento básico, mas pode melhorar.';
+                performanceMessage.textContent = 'Bom trabalho! Você conhece o básico, mas pode melhorar. Revise as características de cada função.';
             } else {
-                performanceMessage.textContent = 'Continue estudando! Revise as funções da linguagem e tente novamente.';
+                performanceMessage.textContent = 'Continue estudando! As funções da linguagem são essenciais para a análise textual. Recomendo revisar o material e tentar novamente.';
             }
         }
         
@@ -841,4 +1189,4 @@
         }
     </script>
 </body>
-  </html>
+</html>
