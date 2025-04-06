@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Funções da Linguagem</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #4fc3f7;
+            --background: #f5f7fa;
+            --text: #333;
+            --correct: #4caf50;
+            --incorrect: #f44336;
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        h1 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .game-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .question-container {
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .example {
+            font-style: italic;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 3px solid var(--accent);
+            margin: 10px 0;
+            color: #555;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            text-align: left;
+        }
+        
+        .option:hover {
+            background-color: #f0f7ff;
+            border-color: var(--accent);
+        }
+        
+        .option.selected {
+            background-color: var(--accent);
+            border-color: var(--secondary);
+            color: white;
+        }
+        
+        .option.correct {
+            background-color: var(--correct);
+            border-color: var(--correct);
+            color: white;
+        }
+        
+        .option.incorrect {
+            background-color: var(--incorrect);
+            border-color: var(--incorrect);
+            color: white;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            color: var(--correct);
+            border-left: 4px solid var(--correct);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            color: var(--incorrect);
+            border-left: 4px solid var(--incorrect);
+            display: block;
+        }
+        
+        .explanation {
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .next-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            display: none;
+        }
+        
+        .next-btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        .score-container {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            height: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 5px;
+            background-color: var(--primary);
+            width: 0;
+            transition: width 0.4s ease;
+        }
+        
+        .start-screen, .end-screen {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .start-btn, .restart-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        
+        .start-btn:hover, .restart-btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        .end-screen h2 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .final-score {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .game-container {
+                padding: 15px;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Quiz Funções da Linguagem</h1>
+        <p class="description">Teste seus conhecimentos sobre as funções da linguagem segundo Roman Jakobson</p>
+    </header>
+    
+    <div id="start-screen" class="start-screen">
+        <h2>Bem-vindo ao Quiz!</h2>
+        <p>Este jogo contém perguntas sobre as seis funções da linguagem:</p>
+        <ul style="list-style-type: none; margin: 20px 0;">
+            <li>• Referencial (Denotativa)</li>
+            <li>• Emotiva (Expressiva)</li>
+            <li>• Conativa (Apelativa)</li>
+            <li>• Fática</li>
+            <li>• Metalinguística</li>
+            <li>• Poética</li>
+        </ul>
+        <p>Você terá que identificar qual função predomina em cada situação.</p>
+        <button id="start-btn" class="start-btn">Começar Quiz</button>
+    </div>
+    
+    <div id="game-screen" class="hidden">
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        
+        <div class="game-container">
+            <div id="question-container" class="question-container">
+                <div id="question" class="question"></div>
+                <div id="example" class="example" style="display: none;"></div>
+                <div id="options" class="options"></div>
+                <div id="feedback" class="feedback"></div>
+                <button id="next-btn" class="next-btn">Próxima Pergunta</button>
+            </div>
+        </div>
+        
+        <div id="score-container" class="score-container">
+            Pontuação: <span id="score">0</span>/<span id="total-questions">0</span>
+        </div>
+    </div>
+    
+    <div id="end-screen" class="end-screen hidden">
+        <h2>Quiz Concluído!</h2>
+        <div class="final-score">Sua pontuação final: <span id="final-score">0</span>/<span id="final-total">0</span></div>
+        <p id="performance-message"></p>
+        <button id="restart-btn" class="restart-btn">Jogar Novamente</button>
+    </div>
+
+    <script>
+        // Banco de questões extenso
+        const questions = [
+            {
+                question: "Qual função da linguagem predomina no seguinte texto: 'A temperatura média na cidade de São Paulo em janeiro é de 22°C'?",
+                options: [
+                    "Função Referencial",
+                    "Função Emotiva",
+                    "Função Conativa",
+                    "Função Fática"
+                ],
+                correctAnswer: 0,
+                explanation: "O texto transmite uma informação objetiva sobre a realidade, sem expressar sentimentos ou tentar influenciar o receptor, caracterizando a função referencial."
+            },
+            {
+                question: "Em uma propaganda que diz 'Não perca esta oportunidade! Compre agora e ganhe 30% de desconto!', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Metalinguística",
+                    "Função Conativa",
+                    "Função Poética",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto visa persuadir o receptor a realizar uma ação (comprar), utilizando a segunda pessoa e o imperativo, características da função conativa."
+            },
+            {
+                question: "Qual função da linguagem está presente no diálogo: 'Alô? Você está me ouvindo? A conexão está ruim...'?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Emotiva",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O diálogo tem como objetivo principal verificar e manter o canal de comunicação, característica da função fática."
+            },
+            {
+                question: "No poema 'No meio do caminho tinha uma pedra', de Carlos Drummond de Andrade, qual função da linguagem predomina?",
+                options: [
+                    "Função Referencial",
+                    "Função Poética",
+                    "Função Metalinguística",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "No texto poético, a mensagem é trabalhada de forma estética, com atenção especial à forma, ao ritmo e à sonoridade, caracterizando a função poética."
+            },
+            {
+                question: "Em um dicionário, a definição 'Adjetivo: palavra que modifica o substantivo, expressando qualidade, característica ou estado' exemplifica qual função da linguagem?",
+                options: [
+                    "Função Emotiva",
+                    "Função Metalinguística",
+                    "Função Referencial",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando o que é um adjetivo), caracterizando a função metalinguística."
+            },
+            {
+                question: "Qual função da linguagem predomina na seguinte declaração: 'Estou extremamente feliz com essa conquista! Nunca imaginei que conseguiria!'?",
+                options: [
+                    "Função Referencial",
+                    "Função Emotiva",
+                    "Função Conativa",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto expressa claramente os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, características da função emotiva."
+            },
+            {
+                question: "Em um manual de instruções que diz 'Para ligar o aparelho, pressione o botão vermelho por 3 segundos', qual função da linguagem está presente?",
+                options: [
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática",
+                    "Função Poética"
+                ],
+                correctAnswer: 0,
+                explanation: "O texto transmite informações objetivas sobre como operar o aparelho, sem expressar sentimentos ou tentar persuadir, caracterizando a função referencial."
+            },
+            {
+                question: "Qual função da linguagem predomina no seguinte trecho de uma campanha eleitoral: 'Vote no candidato X! Ele é a mudança que nosso país precisa!'?",
+                options: [
+                    "Função Emotiva",
+                    "Função Conativa",
+                    "Função Fática",
+                    "Função Metalinguística"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto tem como objetivo persuadir o receptor a realizar uma ação (votar no candidato), utilizando verbos no imperativo, característica da função conativa."
+            },
+            {
+                question: "Na frase 'A palavra 'saudade' é um substantivo feminino que designa a sensação de falta de alguém ou algo', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Poética",
+                    "Função Metalinguística",
+                    "Função Referencial",
+                    "Função Emotiva"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (definindo uma palavra), caracterizando a função metalinguística."
+            },
+            {
+                question: "Qual função da linguagem está presente na seguinte interação: 'Oi, tudo bem? - Tudo sim, e com você? - Também, obrigado!'?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Conativa",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "A conversa tem como principal objetivo estabelecer e manter o contato entre os interlocutores, sem transmitir informações substantivas, caracterizando a função fática."
+            },
+            {
+                question: "Em um artigo científico que apresenta dados sobre o aquecimento global, qual função da linguagem predomina?",
+                options: [
+                    "Função Emotiva",
+                    "Função Referencial",
+                    "Função Poética",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "O artigo científico tem como objetivo principal transmitir informações objetivas sobre a realidade, caracterizando a função referencial."
+            },
+            {
+                question: "Qual função da linguagem predomina na letra da música: 'Eu te amo, você me faz tão bem, é como um sonho que eu não quero acordar'?",
+                options: [
+                    "Função Referencial",
+                    "Função Emotiva",
+                    "Função Fática",
+                    "Função Metalinguística"
+                ],
+                correctAnswer: 1,
+                explanation: "A letra expressa os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, caracterizando a função emotiva."
+            },
+            {
+                question: "Em um anúncio que diz 'Ligue já para 0800-1234 e garanta seu desconto especial!', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Metalinguística",
+                    "Função Conativa",
+                    "Função Poética",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O anúncio visa persuadir o receptor a realizar uma ação (ligar para o número), utilizando o imperativo, característica da função conativa."
+            },
+            {
+                question: "Qual função da linguagem está presente no seguinte diálogo telefônico: 'Está me ouvindo? Acho que a linha está ruim... Pode repetir?'?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Emotiva",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O diálogo tem como objetivo principal verificar e manter o canal de comunicação, característica da função fática."
+            },
+            {
+                question: "Em um dicionário de rimas que apresenta 'Casa: rima com asa, rasa, brasa', qual função da linguagem predomina?",
+                options: [
+                    "Função Referencial",
+                    "Função Metalinguística",
+                    "Função Poética",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto utiliza a linguagem para falar sobre aspectos da própria linguagem (rimas), caracterizando a função metalinguística."
+            },
+            {
+                question: "Qual função da linguagem predomina no seguinte trecho de um poema: 'As águas correm serenas, serenas, / E no céu, tão azul, como são belas'?",
+                options: [
+                    "Função Referencial",
+                    "Função Poética",
+                    "Função Fática",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto trabalha a mensagem de forma estética, com atenção especial à forma, ao ritmo e à sonoridade, caracterizando a função poética."
+            },
+            {
+                question: "Em um relatório meteorológico que diz 'A previsão para amanhã é de chuva forte em toda a região', qual função da linguagem está presente?",
+                options: [
+                    "Função Emotiva",
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto transmite informações objetivas sobre a realidade, sem expressar sentimentos ou tentar influenciar o receptor, caracterizando a função referencial."
+            },
+            {
+                question: "Qual função da linguagem predomina no seguinte desabafo: 'Estou tão cansado dessa situação! Não aguento mais!'?",
+                options: [
+                    "Função Referencial",
+                    "Função Emotiva",
+                    "Função Conativa",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto expressa claramente os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, caracterizando a função emotiva."
+            },
+            {
+                question: "Em uma placa que diz 'Pare!', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática",
+                    "Função Metalinguística"
+                ],
+                correctAnswer: 1,
+                explanation: "A placa tem como objetivo fazer com que o receptor execute uma ação (parar o veículo), utilizando o imperativo, característica da função conativa."
+            },
+            {
+                question: "Qual função da linguagem está presente na seguinte interação: 'Bom dia! Como você está? - Bom dia! Tudo bem, obrigado!'?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Emotiva",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "A conversa tem como principal objetivo estabelecer o contato social entre os interlocutores, sem transmitir informações substantivas, caracterizando a função fática."
+            },
+            {
+                question: "Em um livro de gramática que explica 'O sujeito é o termo da oração que realiza ou sofre a ação expressa pelo verbo', qual função da linguagem predomina?",
+                options: [
+                    "Função Poética",
+                    "Função Metalinguística",
+                    "Função Referencial",
+                    "Função Emotiva"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando um conceito gramatical), caracterizando a função metalinguística."
+            },
+            {
+                question: "Qual função da linguagem predomina no seguinte trecho de uma música: 'O amor não tem rollback, é commit todo dia'?",
+                options: [
+                    "Função Referencial",
+                    "Função Poética",
+                    "Função Fática",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto trabalha a mensagem de forma criativa e estética, utilizando metáforas e jogos de palavras, caracterizando a função poética."
+            },
+            {
+                question: "Em uma notícia que informa 'O PIB do país cresceu 1,2% no último trimestre', qual função da linguagem está presente?",
+                options: [
+                    "Função Emotiva",
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto transmite informações objetivas sobre a realidade, sem expressar sentimentos ou tentar influenciar o receptor, caracterizando a função referencial."
+            },
+            {
+                question: "Qual função da linguagem predomina no seguinte depoimento: 'Nunca me senti tão realizado profissionalmente como agora!'?",
+                options: [
+                    "Função Referencial",
+                    "Função Emotiva",
+                    "Função Conativa",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto expressa claramente os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, caracterizando a função emotiva."
+            },
+            {
+                question: "Em um comando que diz 'Digite sua senha e pressione Enter para continuar', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática",
+                    "Função Metalinguística"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto tem como objetivo fazer com que o receptor execute uma ação (digitar a senha), utilizando o imperativo, característica da função conativa."
+            },
+            {
+                question: "Qual função da linguagem está presente no seguinte diálogo: 'Você está aí? - Estou sim, pode falar'?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Emotiva",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O diálogo tem como objetivo principal verificar e manter o canal de comunicação, característica da função fática."
+            },
+            {
+                question: "Em um texto que explica 'Metáfora é uma figura de linguagem que estabelece uma comparação implícita', qual função da linguagem predomina?",
+                options: [
+                    "Função Poética",
+                    "Função Metalinguística",
+                    "Função Referencial",
+                    "Função Emotiva"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando uma figura de linguagem), caracterizando a função metalinguística."
+            },
+            {
+                question: "Qual função da linguagem predomina no seguinte verso de poema: 'O rio que passa correndo e conta a sua história'?",
+                options: [
+                    "Função Referencial",
+                    "Função Poética",
+                    "Função Fática",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "O verso trabalha a mensagem de forma estética, utilizando personificação e ritmo, caracterizando a função poética."
+            },
+            {
+                question: "Em um boletim médico que informa 'O paciente apresenta febre de 38,5°C e taquicardia', qual função da linguagem está presente?",
+                options: [
+                    "Função Emotiva",
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto transmite informações objetivas sobre o estado do paciente, sem expressar sentimentos ou tentar influenciar, caracterizando a função referencial."
+            },
+            {
+                question: "Qual função da linguagem predomina no seguinte desabafo nas redes sociais: 'Estou tão decepcionado com essa situação! Precisava desabafar!'?",
+                options: [
+                    "Função Referencial",
+                    "Função Emotiva",
+                    "Função Conativa",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto expressa claramente os sentimentos e emoções do emissor, utilizando a primeira pessoa e linguagem subjetiva, caracterizando a função emotiva."
+            },
+            {
+                question: "Em um outdoor que diz 'Proteja a natureza - ela é o nosso maior tesouro!', qual função da linguagem está sendo utilizada?",
+                options: [
+                    "Função Metalinguística",
+                    "Função Conativa",
+                    "Função Poética",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O outdoor visa persuadir o receptor a adotar um comportamento (proteger a natureza), caracterizando a função conativa."
+            },
+            {
+                question: "Qual função da linguagem está presente no seguinte diálogo: 'Você me escuta? Acho que a ligação está caindo... - Sim, estou te ouvindo'?",
+                options: [
+                    "Função Referencial",
+                    "Função Fática",
+                    "Função Emotiva",
+                    "Função Poética"
+                ],
+                correctAnswer: 1,
+                explanation: "O diálogo tem como objetivo principal verificar e manter o canal de comunicação, característica da função fática."
+            },
+            {
+                question: "Em um texto que explica 'Sinônimos são palavras diferentes que possuem significados semelhantes', qual função da linguagem predomina?",
+                options: [
+                    "Função Poética",
+                    "Função Metalinguística",
+                    "Função Referencial",
+                    "Função Emotiva"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto utiliza a linguagem para falar sobre a própria linguagem (explicando o conceito de sinônimos), caracterizando a função metalinguística."
+            },
+            {
+                question: "Qual função da linguagem predomina no seguinte trecho de música: 'Como é difícil acordar calado, se na calada da noite eu me dano'?",
+                options: [
+                    "Função Referencial",
+                    "Função Poética",
+                    "Função Fática",
+                    "Função Conativa"
+                ],
+                correctAnswer: 1,
+                explanation: "O trecho trabalha a mensagem de forma estética, com atenção especial à forma, ao ritmo e à sonoridade, caracterizando a função poética."
+            },
+            {
+                question: "Em um relatório científico que apresenta 'Os resultados indicam uma correlação positiva entre as variáveis X e Y', qual função da linguagem está presente?",
+                options: [
+                    "Função Emotiva",
+                    "Função Referencial",
+                    "Função Conativa",
+                    "Função Fática"
+                ],
+                correctAnswer: 1,
+                explanation: "O texto transmite informações objetivas sobre os resultados da pesquisa, sem expressar sentimentos ou tentar influenciar, caracterizando a função referencial."
+            }
+        ];
+
+        // Variáveis do jogo
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let shuffledQuestions = [];
+        let userAnswers = [];
+        
+        // Elementos do DOM
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const endScreen = document.getElementById('end-screen');
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const questionElement = document.getElementById('question');
+        const exampleElement = document.getElementById('example');
+        const optionsElement = document.getElementById('options');
+        const feedbackElement = document.getElementById('feedback');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreElement = document.getElementById('score');
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const progressBar = document.getElementById('progress-bar');
+        const finalScoreElement = document.getElementById('final-score');
+        const finalTotalElement = document.getElementById('final-total');
+        const performanceMessage = document.getElementById('performance-message');
+        
+        // Event Listeners
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', restartGame);
+        nextBtn.addEventListener('click', nextQuestion);
+        
+        // Função para iniciar o jogo
+        function startGame() {
+            startScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            
+            // Embaralhar questões
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+            
+            // Limitar a 15 questões para não ficar muito longo
+            if (shuffledQuestions.length > 15) {
+                shuffledQuestions = shuffledQuestions.slice(0, 15);
+            }
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            
+            updateScore();
+            showQuestion();
+        }
+        
+        // Função para mostrar a questão atual
+        function showQuestion() {
+            const question = shuffledQuestions[currentQuestionIndex];
+            questionElement.textContent = question.question;
+            
+            // Limpar opções anteriores
+            optionsElement.innerHTML = '';
+            
+            // Adicionar novas opções
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option');
+                button.textContent = option;
+                button.addEventListener('click', () => selectOption(index));
+                optionsElement.appendChild(button);
+            });
+            
+            // Atualizar barra de progresso
+            progressBar.style.width = `${((currentQuestionIndex) / shuffledQuestions.length) * 100}%`;
+            
+            // Esconder feedback e próximo botão
+            feedbackElement.classList.remove('correct', 'incorrect');
+            feedbackElement.style.display = 'none';
+            nextBtn.style.display = 'none';
+        }
+        
+        // Função para selecionar uma opção
+        function selectOption(selectedIndex) {
+            const question = shuffledQuestions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            
+            // Desabilitar todas as opções
+            options.forEach(option => {
+                option.disabled = true;
+            });
+            
+            // Marcar a resposta correta
+            options[question.correctAnswer].classList.add('correct');
+            
+            // Verificar se a resposta está correta
+            if (selectedIndex === question.correctAnswer) {
+                options[selectedIndex].classList.add('correct');
+                feedbackElement.textContent = 'Resposta Correta!';
+                feedbackElement.classList.add('correct');
+                score++;
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                feedbackElement.textContent = 'Resposta Incorreta';
+                feedbackElement.classList.add('incorrect');
+            }
+            
+            // Adicionar explicação
+            const explanation = document.createElement('div');
+            explanation.classList.add('explanation');
+            explanation.textContent = question.explanation;
+            feedbackElement.appendChild(explanation);
+            
+            // Mostrar feedback e próximo botão
+            feedbackElement.style.display = 'block';
+            nextBtn.style.display = 'block';
+            
+            // Atualizar pontuação
+            updateScore();
+            
+            // Registrar resposta do usuário
+            userAnswers.push({
+                question: question.question,
+                userAnswer: question.options[selectedIndex],
+                correctAnswer: question.options[question.correctAnswer],
+                isCorrect: selectedIndex === question.correctAnswer
+            });
+        }
+        
+        // Função para ir para a próxima questão
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < shuffledQuestions.length) {
+                showQuestion();
+            } else {
+                endGame();
+            }
+        }
+        
+        // Função para atualizar a pontuação
+        function updateScore() {
+            scoreElement.textContent = score;
+            totalQuestionsElement.textContent = shuffledQuestions.length;
+        }
+        
+        // Função para finalizar o jogo
+        function endGame() {
+            gameScreen.classList.add('hidden');
+            endScreen.classList.remove('hidden');
+            
+            finalScoreElement.textContent = score;
+            finalTotalElement.textContent = shuffledQuestions.length;
+            
+            // Mensagem de desempenho
+            const percentage = (score / shuffledQuestions.length) * 100;
+            if (percentage >= 80) {
+                performanceMessage.textContent = 'Excelente! Você demonstrou um ótimo conhecimento sobre as funções da linguagem.';
+            } else if (percentage >= 50) {
+                performanceMessage.textContent = 'Bom trabalho! Você tem um conhecimento básico, mas pode melhorar.';
+            } else {
+                performanceMessage.textContent = 'Continue estudando! Revise as funções da linguagem e tente novamente.';
+            }
+        }
+        
+        // Função para reiniciar o jogo
+        function restartGame() {
+            endScreen.classList.add('hidden');
+            startGame();
+        }
+    </script>
+</body>
+  </html>
