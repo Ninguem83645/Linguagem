@@ -3,210 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz de Potência e Energia Elétrica</title>
+    <title>Quiz de Filosofia Kantiana</title>
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
+            --primary-color: #4a148c;
+            --secondary-color: #7b1fa2;
+            --accent-color: #e1bee7;
+            --text-color: #333;
+            --light-text: #f5f5f5;
+            --correct-color: #4caf50;
+            --incorrect-color: #f44336;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            color: var(--dark-color);
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
         }
-        
+
         header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: var(--light-text);
+            padding: 20px;
+            text-align: center;
         }
-        
+
         h1 {
-            margin: 0;
-            font-size: 2.2rem;
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
-        
-        .game-info {
-            display: flex;
-            justify-content: space-between;
+
+        .quiz-description {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-container {
+            padding: 20px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: var(--border-radius);
             margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            border-radius: var(--border-radius);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-counter {
+            text-align: right;
+            margin-bottom: 10px;
             font-weight: bold;
-            color: var(--dark-color);
+            color: var(--secondary-color);
         }
-        
-        .question-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
+
         .question {
             font-size: 1.2rem;
             margin-bottom: 20px;
             font-weight: 600;
+            color: var(--primary-color);
         }
-        
+
         .options {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 12px;
+            margin-bottom: 25px;
         }
-        
+
         .option {
             padding: 15px;
-            border: 2px solid var(--light-color);
-            border-radius: 8px;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
             cursor: pointer;
             transition: all 0.3s ease;
+            text-align: left;
             font-size: 1rem;
+            position: relative;
         }
-        
+
         .option:hover {
-            background-color: var(--light-color);
-            border-color: var(--primary-color);
+            border-color: var(--secondary-color);
+            background-color: #f5f5f5;
         }
-        
+
         .option.selected {
-            background-color: var(--primary-color);
-            color: white;
             border-color: var(--primary-color);
-        }
-        
-        .option.correct {
-            background-color: var(--success-color);
-            color: white;
-            border-color: var(--success-color);
-        }
-        
-        .option.incorrect {
             background-color: var(--accent-color);
-            color: white;
-            border-color: var(--accent-color);
         }
-        
+
+        .option.correct {
+            border-color: var(--correct-color);
+            background-color: #e8f5e9;
+        }
+
+        .option.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #ffebee;
+        }
+
         .feedback {
+            padding: 20px;
             margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             display: none;
         }
-        
+
         .feedback.correct {
-            background-color: rgba(46, 204, 113, 0.2);
-            border-left: 5px solid var(--success-color);
+            background-color: #e8f5e9;
+            border-left: 5px solid var(--correct-color);
             display: block;
         }
-        
+
         .feedback.incorrect {
-            background-color: rgba(231, 76, 60, 0.2);
-            border-left: 5px solid var(--accent-color);
+            background-color: #ffebee;
+            border-left: 5px solid var(--incorrect-color);
             display: block;
         }
-        
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .correct-answer {
+            color: var(--correct-color);
+            font-weight: bold;
+        }
+
+        .explanation {
+            margin-top: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .next-btn {
             background-color: var(--primary-color);
             color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            display: block;
-            margin: 20px auto 0;
+            margin-left: auto;
         }
-        
-        .next-btn:hover {
+
+        .next-btn:hover:not(:disabled) {
             background-color: var(--secondary-color);
         }
-        
-        .progress-container {
-            width: 100%;
-            background-color: var(--light-color);
-            border-radius: 10px;
-            margin-bottom: 20px;
-            height: 10px;
+
+        .restart-btn {
+            background-color: var(--secondary-color);
+            color: white;
         }
-        
-        .progress-bar {
-            height: 100%;
-            border-radius: 10px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            width: 0%;
-            transition: width 0.5s ease;
+
+        .restart-btn:hover {
+            background-color: var(--primary-color);
         }
-        
-        .score-container {
+
+        .start-btn {
+            background-color: var(--primary-color);
+            color: white;
+            display: block;
+            margin: 30px auto;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+
+        .start-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .result-container {
             text-align: center;
+            padding: 30px;
+        }
+
+        .score {
             font-size: 1.5rem;
-            font-weight: bold;
             margin: 20px 0;
+            color: var(--primary-color);
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .hide {
             display: none;
         }
-        
-        .restart-btn {
-            background-color: var(--warning-color);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            display: block;
-            margin: 20px auto;
-        }
-        
-        .restart-btn:hover {
-            background-color: #e67e22;
-        }
-        
-        .timer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-        
+
         @media (max-width: 600px) {
-            .container {
+            body {
                 padding: 10px;
-            }
-            
-            header {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
             }
             
             .question {
                 font-size: 1.1rem;
+            }
+            
+            .option {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+            
+            button {
+                padding: 10px 20px;
             }
         }
     </style>
@@ -214,807 +259,429 @@
 <body>
     <div class="container">
         <header>
-            <h1>Quiz de Potência e Energia Elétrica</h1>
-            <p>Teste seus conhecimentos sobre conceitos elétricos fundamentais</p>
+            <h1>Quiz de Filosofia Kantiana</h1>
+            <p class="quiz-description">Teste seu conhecimento sobre Immanuel Kant e sua filosofia transcendental</p>
         </header>
-        
-        <div class="game-info">
-            <div class="score">Pontuação: <span id="score">0</span></div>
-            <div class="timer" id="timer">30</div>
+
+        <div id="start-screen" class="quiz-container">
+            <h2>Bem-vindo ao Quiz Kantiano!</h2>
+            <p>Este quiz contém 20 questões sobre a filosofia de Immanuel Kant, abordando conceitos como:</p>
+            <ul style="margin: 15px 0 15px 20px;">
+                <li>Sujeito transcendental</li>
+                <li>Intuição sensível</li>
+                <li>Categorias do entendimento</li>
+                <li>Idealismo transcendental</li>
+                <li>E muito mais!</li>
+            </ul>
+            <p>Para cada questão, selecione a alternativa que você considera correta. Após responder, você verá uma explicação detalhada sobre o conceito.</p>
+            <button class="start-btn">Começar Quiz</button>
         </div>
-        
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        
-        <div class="question-container" id="question-container">
+
+        <div id="quiz-screen" class="quiz-container hide">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="question-counter" id="question-counter"></div>
             <div class="question" id="question"></div>
             <div class="options" id="options"></div>
-            <div class="feedback" id="feedback"></div>
-            <button class="next-btn" id="next-btn">Próxima Pergunta</button>
+            <div class="feedback" id="feedback">
+                <div class="feedback-title" id="feedback-title"></div>
+                <div class="correct-answer" id="correct-answer"></div>
+                <div class="explanation" id="explanation"></div>
+            </div>
+            <div class="controls">
+                <button class="next-btn" id="next-btn" disabled>Próxima Pergunta</button>
+            </div>
         </div>
-        
-        <div class="score-container" id="final-score-container">
+
+        <div id="result-screen" class="result-container hide">
             <h2>Quiz Concluído!</h2>
-            <p>Sua pontuação final: <span id="final-score">0</span>/<span id="total-questions">0</span></p>
-            <button class="restart-btn" id="restart-btn">Jogar Novamente</button>
+            <div class="score">
+                Sua pontuação: <span class="score-value" id="score-value">0</span>/20
+            </div>
+            <p id="result-message"></p>
+            <button class="restart-btn">Refazer Quiz</button>
         </div>
     </div>
 
     <script>
-        // Banco de questões ampliado (50 questões)
+        // Variáveis do quiz
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOption = null;
+        
+        // Todas as perguntas do quiz
         const questions = [
             {
-                question: "O que representa a potência elétrica?",
+                question: "1. O que significa 'transcendental' na filosofia kantiana?",
                 options: [
-                    "A quantidade total de energia consumida por um aparelho",
-                    "A taxa com que a energia elétrica é transformada em outras formas de energia",
-                    "A resistência elétrica de um componente",
-                    "A diferença de potencial entre dois pontos"
+                    "a) Aquilo que está além da experiência sensível.",
+                    "b) O conhecimento que transcende o mundo físico.",
+                    "c) Aquilo que se refere às condições a priori que tornam possível o conhecimento.",
+                    "d) O estudo das realidades metafísicas."
+                ],
+                answer: 2,
+                explanation: "Na filosofia kantiana, 'transcendental' refere-se ao estudo das condições de possibilidade do conhecimento, ou seja, às estruturas a priori que permitem que a experiência e o conhecimento ocorram."
+            },
+            {
+                question: "2. Quais são os dois principais elementos que compõem o sujeito transcendental?",
+                options: [
+                    "a) Sensibilidade e razão.",
+                    "b) Entendimento e razão.",
+                    "c) Sensibilidade e entendimento.",
+                    "d) Intuição e percepção."
+                ],
+                answer: 2,
+                explanation: "Para Kant, o sujeito transcendental é composto por duas faculdades principais: a sensibilidade, que recebe as informações do mundo externo, e o entendimento, que organiza essas informações por meio de conceitos."
+            },
+            {
+                question: "3. O que Kant chama de intuição sensível?",
+                options: [
+                    "a) A capacidade de pensar os objetos da experiência.",
+                    "b) A representação imediata dos objetos, mediada pelos sentidos.",
+                    "c) A reflexão racional sobre os dados sensoriais.",
+                    "d) A percepção intelectual dos objetos."
                 ],
                 answer: 1,
-                explanation: "A potência elétrica é definida como a taxa com a qual a energia elétrica é transformada em outras formas de energia (como luz, calor, energia mecânica) por unidade de tempo."
+                explanation: "A intuição sensível, segundo Kant, é a forma como os objetos são dados ao sujeito de maneira imediata, através da sensibilidade, ou seja, dos sentidos."
             },
             {
-                question: "Qual é a unidade padrão de potência elétrica?",
+                question: "4. Por que a intuição sensível é considerada passiva?",
                 options: [
-                    "Volt (V)",
-                    "Ampère (A)",
-                    "Watt (W)",
-                    "Joule (J)"
+                    "a) Porque ela é uma atividade voluntária do sujeito.",
+                    "b) Porque ela depende da ação do entendimento.",
+                    "c) Porque ela ocorre sem a interferência do sujeito, sendo causada pelos objetos.",
+                    "d) Porque ela é uma construção racional do sujeito."
                 ],
                 answer: 2,
-                explanation: "A unidade padrão de potência elétrica é o watt (W), onde 1 W equivale a 1 joule por segundo (1 W = 1 J/s)."
+                explanation: "A intuição sensível é passiva porque o sujeito é afetado pelos objetos, recebendo as informações sem interferência ativa, ou seja, os dados são impostos ao sujeito pelos objetos externos."
             },
             {
-                question: "Qual fórmula representa corretamente a potência elétrica em um circuito?",
+                question: "5. Qual das propriedades do conhecimento é mais importante: a sensibilidade ou o entendimento?",
                 options: [
-                    "P = V / I",
-                    "P = V × I",
-                    "P = I / R",
-                    "P = V × R"
+                    "a) A sensibilidade, pois fornece os dados brutos da experiência.",
+                    "b) O entendimento, pois organiza os dados em conhecimento.",
+                    "c) Ambas são igualmente importantes e interdependentes.",
+                    "d) Nenhuma, pois o conhecimento independe dessas faculdades."
+                ],
+                answer: 2,
+                explanation: "Kant afirma que a sensibilidade e o entendimento são igualmente essenciais para o conhecimento: a sensibilidade fornece os dados da experiência, e o entendimento os organiza por meio de conceitos."
+            },
+            {
+                question: "6. Qual o papel da sensibilidade em relação aos objetos e ao entendimento?",
+                options: [
+                    "a) Criar conceitos para os objetos percebidos.",
+                    "b) Receber as impressões dos objetos e fornecê-las ao entendimento.",
+                    "c) Julgar os objetos com base na razão pura.",
+                    "d) Determinar as categorias do entendimento."
                 ],
                 answer: 1,
-                explanation: "A potência em circuitos elétricos é calculada por P = V × I, onde V é a tensão (em volts) e I é a corrente (em amperes)."
+                explanation: "A sensibilidade é responsável por receber as impressões dos objetos através dos sentidos e transmiti-las ao entendimento, que então as processa e organiza em conhecimento."
             },
             {
-                question: "Se uma lâmpada de 60W fica ligada por 5 horas, quanto de energia elétrica ela consome?",
+                question: "7. O que significa a afirmação de Kant: 'Pensamentos sem conteúdo são vazios; intuições sem conceitos são cegas'?",
                 options: [
-                    "12 Wh",
-                    "60 Wh",
-                    "300 Wh",
-                    "3000 Wh"
+                    "a) Que o conhecimento é possível apenas pela razão pura.",
+                    "b) Que a experiência sensível é suficiente para o conhecimento.",
+                    "c) Que o conhecimento requer tanto a intuição sensível quanto os conceitos do entendimento.",
+                    "d) Que os conceitos são independentes da experiência sensível."
                 ],
                 answer: 2,
-                explanation: "Energia = Potência × Tempo = 60W × 5h = 300Wh (watt-hora)."
+                explanation: "Kant enfatiza que os conceitos (pensamentos) sem os dados da sensibilidade (conteúdo) são vazios, e as intuições sensíveis sem a organização dos conceitos são cegas, ou seja, não resultam em conhecimento."
             },
             {
-                question: "Qual das seguintes fórmulas NÃO representa a potência elétrica?",
+                question: "8. Segundo Kant, o entendimento pode intuir objetos?",
                 options: [
-                    "P = I² × R",
-                    "P = V² / R",
-                    "P = E / Δt",
-                    "P = R / V²"
-                ],
-                answer: 3,
-                explanation: "P = R / V² não é uma fórmula válida para cálculo de potência elétrica. As outras opções são fórmulas corretas derivadas da Lei de Ohm."
-            },
-            {
-                question: "Se três lâmpadas de 40W, 60W e 100W são ligadas por 6 horas, qual o trabalho total realizado?",
-                options: [
-                    "200 J",
-                    "1200 J",
-                    "4.32 × 10⁶ J",
-                    "7.2 × 10⁴ J"
-                ],
-                answer: 2,
-                explanation: "Potência total = 40 + 60 + 100 = 200W. Tempo = 6h = 21600s. Trabalho = P × Δt = 200W × 21600s = 4.32 × 10⁶ J."
-            },
-            {
-                question: "Qual é a principal vantagem das lâmpadas LED em comparação com as incandescentes?",
-                options: [
-                    "São mais baratas para comprar",
-                    "Produzem mais calor",
-                    "São mais eficientes energeticamente",
-                    "Têm um espectro de cores mais limitado"
-                ],
-                answer: 2,
-                explanation: "As lâmpadas LED são até 80% mais eficientes que as incandescentes, transformando mais energia em luz e menos em calor."
-            },
-            {
-                question: "Quantos joules há em 1 kWh?",
-                options: [
-                    "3.6 × 10³ J",
-                    "3.6 × 10⁶ J",
-                    "1.0 × 10³ J",
-                    "1.0 × 10⁶ J"
+                    "a) Sim, pois é a faculdade que percebe os objetos diretamente.",
+                    "b) Não, pois sua função é apenas organizar os dados fornecidos pela sensibilidade.",
+                    "c) Sim, mas apenas em casos de conhecimento a priori.",
+                    "d) Não, pois a intuição é exclusiva da razão."
                 ],
                 answer: 1,
-                explanation: "1 kWh = 1000W × 3600s = 3.6 × 10⁶ J (3.600.000 joules)."
+                explanation: "O entendimento, para Kant, não possui a capacidade de intuir; sua função é pensar os objetos fornecidos pela sensibilidade, organizando-os por meio de conceitos."
             },
             {
-                question: "Se 25 lâmpadas de 40W cada são usadas 5 horas por dia durante 20 dias, qual o custo se o kWh custa R$ 0,40?",
+                question: "9. O que são as categorias do entendimento em Kant?",
                 options: [
-                    "R$ 20,00",
-                    "R$ 40,00",
-                    "R$ 60,00",
-                    "R$ 80,00"
+                    "a) As diferentes formas de intuição sensível.",
+                    "b) As estruturas a priori que organizam as intuições sensíveis em conhecimento.",
+                    "c) As leis naturais que regem o mundo físico.",
+                    "d) As emoções que influenciam a percepção dos objetos."
                 ],
                 answer: 1,
-                explanation: "Potência total = 25 × 40W = 1000W = 1kW. Tempo = 20 × 5 = 100h. Energia = 1kW × 100h = 100kWh. Custo = 100 × 0,40 = R$ 40,00."
+                explanation: "As categorias do entendimento são conceitos puros, a priori, que estruturam e organizam as intuições sensíveis, permitindo que se transformem em conhecimento."
             },
             {
-                question: "Qual é a vida útil típica de uma lâmpada LED em comparação com uma incandescente?",
+                question: "10. Por que, segundo Kant, é necessário subordinar as intuições a conceitos?",
                 options: [
-                    "Aproximadamente a mesma",
-                    "2-3 vezes maior",
-                    "5-10 vezes maior",
-                    "25-50 vezes maior"
+                    "a) Para que possam ser percebidas pelos sentidos.",
+                    "b) Para que adquiram significado e possam ser compreendidas.",
+                    "c) Para que sejam eliminadas do processo de conhecimento.",
+                    "d) Para que se tornem independentes da experiência."
                 ],
-                answer: 3,
-                explanation: "Lâmpadas LED têm vida útil típica de 25.000-50.000 horas, enquanto incandescentes duram apenas 1.000-2.000 horas."
+                answer: 1,
+                explanation: "As intuições sensíveis, por si só, não constituem conhecimento; é necessário que sejam organizadas pelos conceitos do entendimento para que adquiram significado e possam ser compreendidas."
             },
             {
-                question: "Qual fórmula representa a potência elétrica dissipada em um resistor?",
+                question: "11. Segundo Kant, o que são as formas puras da sensibilidade?",
                 options: [
-                    "P = V × I",
-                    "P = I² × R",
-                    "P = V² / R",
-                    "Todas as anteriores"
-                ],
-                answer: 3,
-                explanation: "Todas as fórmulas apresentadas são válidas para calcular a potência dissipada em um resistor, sendo derivadas da combinação da Lei de Ohm com a fórmula básica de potência."
-            },
-            {
-                question: "O que acontece com a potência dissipada em um resistor se a corrente que passa por ele dobra?",
-                options: [
-                    "Permanece a mesma",
-                    "Dobra",
-                    "Quadruplica",
-                    "Reduz pela metade"
+                    "a) Os conceitos adquiridos pela experiência.",
+                    "b) As categorias do entendimento.",
+                    "c) O espaço e o tempo, que estruturam as intuições sensíveis.",
+                    "d) As ideias da razão pura."
                 ],
                 answer: 2,
-                explanation: "Pela fórmula P = I² × R, se a corrente dobra, a potência aumenta por um fator de 2² = 4 (quadruplica)."
+                explanation: "Em Kant, as formas puras da sensibilidade são o espaço e o tempo, estruturas a priori que organizam as intuições sensíveis, permitindo que os objetos sejam percebidos."
             },
             {
-                question: "Qual é a eficiência aproximada de uma lâmpada incandescente na conversão de energia elétrica em luz?",
+                question: "12. O que Kant entende por 'coisa em si' (númeno)?",
                 options: [
-                    "5-10%",
-                    "25-30%",
-                    "50-60%",
-                    "80-90%"
+                    "a) O objeto tal como é conhecido pela experiência.",
+                    "b) O objeto como aparece aos sentidos.",
+                    "c) O objeto independente da experiência, inacessível ao conhecimento humano.",
+                    "d) O objeto construído pelo entendimento."
+                ],
+                answer: 2,
+                explanation: "Para Kant, a 'coisa em si' é a realidade que existe independentemente da nossa percepção, mas que não pode ser conhecida diretamente, pois nosso conhecimento é limitado aos fenômenos."
+            },
+            {
+                question: "13. Qual é a função das categorias do entendimento em Kant?",
+                options: [
+                    "a) Organizar as intuições sensíveis em conhecimento.",
+                    "b) Fornecer dados brutos da experiência.",
+                    "c) Criar as formas puras da sensibilidade.",
+                    "d) Determinar as ideias da razão pura."
                 ],
                 answer: 0,
-                explanation: "Lâmpadas incandescentes convertem apenas 5-10% da energia elétrica em luz, sendo o restante dissipado como calor."
+                explanation: "As categorias do entendimento são conceitos puros a priori que estruturam e organizam as intuições sensíveis, permitindo que se transformem em conhecimento."
             },
             {
-                question: "Qual é o principal fator que torna as lâmpadas LED mais econômicas a longo prazo?",
+                question: "14. O que caracteriza o conhecimento empírico em Kant?",
                 options: [
-                    "Preço de compra mais baixo",
-                    "Maior produção de calor",
-                    "Menor consumo de energia para mesma luminosidade",
-                    "Facilidade de descarte"
+                    "a) É independente da experiência.",
+                    "b) É baseado apenas na razão pura.",
+                    "c) É derivado da experiência sensível e organizado pelo entendimento.",
+                    "d) É conhecimento das coisas em si."
                 ],
                 answer: 2,
-                explanation: "A principal vantagem econômica dos LEDs é sua maior eficiência, consumindo menos energia para produzir a mesma quantidade de luz que outras tecnologias."
+                explanation: "O conhecimento empírico, segundo Kant, resulta da combinação da experiência sensível (dados fornecidos pelos sentidos) com a organização proporcionada pelo entendimento."
             },
             {
-                question: "Se a tensão em um resistor dobra enquanto sua resistência permanece constante, o que acontece com a potência dissipada?",
+                question: "15. Por que, segundo Kant, a razão pura não pode conhecer as coisas em si?",
                 options: [
-                    "Permanece a mesma",
-                    "Dobra",
-                    "Quadruplica",
-                    "Reduz pela metade"
+                    "a) Porque as coisas em si não existem.",
+                    "b) Porque a razão pura é limitada aos fenômenos.",
+                    "c) Porque a razão pura é inferior ao entendimento.",
+                    "d) Porque as coisas em si são acessíveis apenas pela fé."
+                ],
+                answer: 1,
+                explanation: "Kant argumenta que a razão pura só pode conhecer os fenômenos, ou seja, as coisas como aparecem a nós, e não as coisas em si, que estão além da nossa capacidade de conhecimento."
+            },
+            {
+                question: "16. Qual é o papel da razão na filosofia kantiana?",
+                options: [
+                    "a) Fornecer intuições sensíveis.",
+                    "b) Organizar os dados sensoriais em categorias.",
+                    "c) Regular o uso do entendimento e orientar a moralidade.",
+                    "d) Produzir conhecimento empírico."
                 ],
                 answer: 2,
-                explanation: "Pela fórmula P = V²/R, se a tensão dobra, a potência aumenta por um fator de 2² = 4 (quadruplica)."
+                explanation: "Na filosofia de Kant, a razão tem uma função reguladora, orientando o uso do entendimento e sendo fundamental na formação de juízos morais."
             },
             {
-                question: "Qual das seguintes afirmações sobre energia elétrica está correta?",
+                question: "17. O que Kant entende por 'idealismo transcendental'?",
                 options: [
-                    "Energia elétrica é a mesma coisa que potência elétrica",
-                    "Energia elétrica é a potência multiplicada pelo tempo",
-                    "A unidade de energia elétrica no SI é o watt",
-                    "Energia elétrica independe do tempo de uso"
-                ],
-                answer: 1,
-                explanation: "Energia elétrica é a quantidade total de energia consumida ou fornecida, calculada como potência multiplicada pelo tempo (E = P × Δt)."
-            },
-            {
-                question: "Por que o fator de potência é importante em circuitos de corrente alternada?",
-                options: [
-                    "Determina a cor do LED",
-                    "Indica a eficiência na utilização da energia elétrica",
-                    "Define a vida útil dos componentes",
-                    "Especifica a temperatura de operação"
-                ],
-                answer: 1,
-                explanation: "O fator de potência (FP) indica a eficiência na utilização da energia elétrica. Um FP baixo significa que há mais energia reativa circulando, o que pode aumentar perdas na transmissão."
-            },
-            {
-                question: "Como se calcula o custo de operação de um aparelho elétrico?",
-                options: [
-                    "Potência × Tempo × Custo por kWh",
-                    "Tensão × Corrente × Resistência",
-                    "Energia / Tempo",
-                    "Potência / Tensão"
-                ],
-                answer: 0,
-                explanation: "O custo de operação é calculado multiplicando a potência pelo tempo de uso e pelo custo por kWh (convertendo para kW se necessário)."
-            },
-            {
-                question: "Qual é a principal desvantagem ambiental das lâmpadas fluorescentes em comparação com LEDs?",
-                options: [
-                    "Consomem mais energia",
-                    "Contêm mercúrio, uma substância tóxica",
-                    "Produzem menos luz",
-                    "São mais difíceis de reciclar"
-                ],
-                answer: 1,
-                explanation: "As lâmpadas fluorescentes contêm mercúrio em sua composição, o que as torna potencialmente perigosas para o meio ambiente se não descartadas corretamente."
-            },
-            {
-                question: "Se um chuveiro de 5500W funciona por 15 minutos diariamente durante 30 dias, qual o consumo mensal em kWh?",
-                options: [
-                    "41,25 kWh",
-                    "82,50 kWh",
-                    "123,75 kWh",
-                    "247,50 kWh"
-                ],
-                answer: 0,
-                explanation: "Potência = 5500W = 5,5kW. Tempo diário = 15min = 0,25h. Tempo mensal = 0,25h × 30 = 7,5h. Energia = 5,5kW × 7,5h = 41,25 kWh."
-            },
-            {
-                question: "Qual é a relação entre a potência nominal e o consumo real de um aparelho elétrico?",
-                options: [
-                    "São sempre iguais",
-                    "A potência nominal é o máximo que o aparelho pode consumir",
-                    "O consumo real é sempre maior que a potência nominal",
-                    "Não há relação entre os dois conceitos"
-                ],
-                answer: 1,
-                explanation: "A potência nominal representa o consumo máximo do aparelho em condições normais de uso. O consumo real pode ser menor dependendo da configuração ou uso."
-            },
-            {
-                question: "Se um resistor de 100Ω dissipa 4W de potência, qual é a corrente que passa por ele?",
-                options: [
-                    "0,02 A",
-                    "0,2 A",
-                    "2 A",
-                    "20 A"
-                ],
-                answer: 1,
-                explanation: "Usando P = I² × R → I = √(P/R) = √(4/100) = √0,04 = 0,2 A."
-            },
-            {
-                question: "Qual é a principal diferença entre potência ativa e potência aparente em circuitos AC?",
-                options: [
-                    "Potência ativa é medida em watts e potência aparente em volt-ampères",
-                    "São conceitos idênticos com nomes diferentes",
-                    "Potência ativa considera apenas a resistência, enquanto aparente considera indutância e capacitância",
-                    "Potência ativa é CC e aparente é CA"
-                ],
-                answer: 0,
-                explanation: "Em circuitos AC, a potência ativa (real, em watts) é a que realiza trabalho útil, enquanto a potência aparente (em VA) inclui também a energia reativa."
-            },
-            {
-                question: "Qual é o efeito de ligar vários aparelhos em uma mesma tomada com extensão?",
-                options: [
-                    "Aumenta a resistência total do circuito",
-                    "Pode causar sobrecarga se a corrente total exceder a capacidade da fiação",
-                    "Reduz o consumo individual de cada aparelho",
-                    "Nenhum efeito significativo"
-                ],
-                answer: 1,
-                explanation: "Ligar muitos aparelhos em uma mesma tomada aumenta a corrente total, podendo superar a capacidade da fiação e causar superaquecimento ou até incêndios."
-            },
-            {
-                question: "Qual é a vantagem de corrigir o fator de potência em uma instalação industrial?",
-                options: [
-                    "Reduz o consumo total de energia",
-                    "Diminui as perdas na transmissão e evita multas da concessionária",
-                    "Aumenta a tensão disponível para os equipamentos",
-                    "Permite usar fios de menor bitola"
-                ],
-                answer: 1,
-                explanation: "A correção do fator de potência reduz a energia reativa circulante, diminuindo perdas e evitando penalidades financeiras das concessionárias de energia."
-            },
-            {
-                question: "Se uma lâmpada LED de 9W substitui uma incandescente de 60W com mesma luminosidade, qual a economia percentual aproximada?",
-                options: [
-                    "15%",
-                    "35%",
-                    "65%",
-                    "85%"
-                ],
-                answer: 3,
-                explanation: "Economia = (60-9)/60 × 100 = 51/60 × 100 ≈ 85%. LEDs são muito mais eficientes que lâmpadas incandescentes."
-            },
-            {
-                question: "Qual é o significado físico do efeito Joule?",
-                options: [
-                    "Conversão de energia mecânica em elétrica",
-                    "Dissipação de energia elétrica na forma de calor em resistores",
-                    "Produção de luz em lâmpadas fluorescentes",
-                    "Armazenamento de energia em campos magnéticos"
-                ],
-                answer: 1,
-                explanation: "O efeito Joule descreve a transformação de energia elétrica em calor quando a corrente passa por um material resistivo, como em aquecedores ou filamentos de lâmpadas."
-            },
-            {
-                question: "Qual é o consumo mensal aproximado de uma geladeira de 150W que fica ligada 8 horas por dia?",
-                options: [
-                    "12 kWh",
-                    "36 kWh",
-                    "72 kWh",
-                    "120 kWh"
-                ],
-                answer: 1,
-                explanation: "150W = 0,15kW. Tempo = 8h/dia × 30dias = 240h. Energia = 0,15 × 240 = 36 kWh."
-            },
-            {
-                question: "Por que as lâmpadas incandescentes estão sendo banidas em muitos países?",
-                options: [
-                    "Porque produzem luz de má qualidade",
-                    "Devido à sua baixa eficiência energética",
-                    "Porque contêm materiais radioativos",
-                    "Porque são muito caras para produzir"
-                ],
-                answer: 1,
-                explanation: "As lâmpadas incandescentes convertem apenas 5-10% da energia em luz, sendo extremamente ineficientes. Seu banimento visa reduzir o consumo energético global."
-            },
-            {
-                question: "Qual é a relação entre a potência de um chuveiro elétrico e o disjuntor necessário para protegê-lo?",
-                options: [
-                    "O disjuntor deve ter corrente nominal igual à potência do chuveiro",
-                    "O disjuntor deve suportar a corrente calculada por I = P/V",
-                    "Não há relação direta entre os dois",
-                    "O disjuntor deve ter potência igual à do chuveiro"
-                ],
-                answer: 1,
-                explanation: "A corrente do circuito é calculada por I = P/V. O disjuntor deve ser dimensionado para esta corrente, com uma margem de segurança."
-            },
-            {
-                question: "Se a resistência de um circuito dobra enquanto a tensão permanece constante, o que acontece com a potência?",
-                options: [
-                    "Dobra",
-                    "Quadruplica",
-                    "Reduz à metade",
-                    "Permanece igual"
+                    "a) A crença de que a realidade é uma ilusão.",
+                    "b) A ideia de que o conhecimento é impossível.",
+                    "c) A doutrina de que conhecemos apenas os fenômenos, não as coisas em si.",
+                    "d) A afirmação de que tudo é construído pela mente."
                 ],
                 answer: 2,
-                explanation: "Pela fórmula P = V²/R, se R dobra, P se reduz à metade (são inversamente proporcionais)."
+                explanation: "O idealismo transcendental de Kant sustenta que nosso conhecimento se limita aos fenômenos, ou seja, às aparências das coisas, e não às coisas em si, que permanecem inacessíveis."
             },
             {
-                question: "Qual é a principal razão para o uso de lâmpadas LED em iluminação pública?",
+                question: "18. Por que, segundo Kant, as intuições sem conceitos são cegas?",
                 options: [
-                    "Custo inicial mais baixo",
-                    "Maior produção de calor",
-                    "Redução do consumo energético e manutenção",
-                    "Facilidade de descarte"
+                    "a) Porque não podem ser percebidas pelos sentidos.",
+                    "b) Porque não têm forma ou estrutura.",
+                    "c) Porque não podem ser compreendidas ou organizadas em conhecimento.",
+                    "d) Porque não existem na realidade."
                 ],
                 answer: 2,
-                explanation: "LEDs reduzem drasticamente o consumo de energia e têm vida útil muito longa, diminuindo custos operacionais e frequência de substituição."
+                explanation: "Kant afirma que as intuições sensíveis, sem a organização proporcionada pelos conceitos do entendimento, não resultam em conhecimento, sendo, portanto, 'cegas'."
             },
             {
-                question: "Qual é a corrente que passa por uma lâmpada de 60W ligada em 120V?",
+                question: "19. Qual é a relação entre espaço e tempo na teoria kantiana do conhecimento?",
                 options: [
-                    "0,5 A",
-                    "2 A",
-                    "5 A",
-                    "7,2 A"
-                ],
-                answer: 0,
-                explanation: "P = V × I → I = P/V = 60/120 = 0,5 A."
-            },
-            {
-                question: "Qual é a resistência de uma lâmpada de 100W projetada para 220V?",
-                options: [
-                    "22 Ω",
-                    "44 Ω",
-                    "220 Ω",
-                    "484 Ω"
-                ],
-                answer: 3,
-                explanation: "P = V²/R → R = V²/P = 220²/100 = 48400/100 = 484 Ω."
-            },
-            {
-                question: "Qual é o custo anual de deixar uma TV de 80W em standby (consumo de 5W) 24h por dia, com kWh a R$0,50?",
-                options: [
-                    "R$ 10,95",
-                    "R$ 21,90",
-                    "R$ 43,80",
-                    "R$ 87,60"
+                    "a) São categorias do entendimento.",
+                    "b) São formas puras da sensibilidade que estruturam as intuições sensíveis.",
+                    "c) São conceitos adquiridos pela experiência.",
+                    "d) São ideias da razão pura."
                 ],
                 answer: 1,
-                explanation: "5W = 0,005kW. Tempo = 24h/dia × 365dias = 8760h. Energia = 0,005 × 8760 = 43,8 kWh. Custo = 43,8 × 0,50 = R$ 21,90."
+                explanation: "Em Kant, espaço e tempo são formas a priori da sensibilidade, que moldam a maneira como percebemos os objetos, sendo essenciais para a experiência sensível."
             },
             {
-                question: "Qual é a vantagem de usar lâmpadas de menor potência em paralelo em vez de uma de alta potência?",
+                question: "20. Por que, segundo Kant, os pensamentos sem conteúdo são vazios?",
                 options: [
-                    "Reduz a corrente total do circuito",
-                    "Aumenta a resistência total",
-                    "Proporciona redundância (se uma queimar, as outras continuam funcionando)",
-                    "Diminui o consumo total de energia"
-                ],
-                answer: 2,
-                explanation: "Em paralelo, cada lâmpada funciona independentemente. Se uma queimar, as outras continuam acesas, ao contrário de uma configuração em série."
-            },
-            {
-                question: "Qual é o consumo diário de um ar-condicionado de 1200W que funciona 6 horas por dia?",
-                options: [
-                    "2,4 kWh",
-                    "4,8 kWh",
-                    "7,2 kWh",
-                    "9,6 kWh"
-                ],
-                answer: 2,
-                explanation: "1200W = 1,2kW. Energia = 1,2 × 6 = 7,2 kWh."
-            },
-            {
-                question: "Qual é a relação entre a potência de um aparelho e o tempo de uso em relação ao consumo de energia?",
-                options: [
-                    "O consumo é diretamente proporcional à potência e ao tempo de uso",
-                    "O consumo é inversamente proporcional à potência",
-                    "O consumo depende apenas da potência, não do tempo",
-                    "O consumo depende apenas do tempo, não da potência"
+                    "a) Porque não têm base na experiência sensível.",
+                    "b) Porque são contraditórios.",
+                    "c) Porque são apenas ideias da razão.",
+                    "d) Porque não podem ser expressos em linguagem."
                 ],
                 answer: 0,
-                explanation: "O consumo de energia (E) é calculado por E = P × t, sendo diretamente proporcional tanto à potência (P) quanto ao tempo de uso (t)."
-            },
-            {
-                question: "Por que os cabos de alimentação de aparelhos de alta potência são mais grossos?",
-                options: [
-                    "Para suportar maior corrente sem superaquecer",
-                    "Para aumentar a resistência do circuito",
-                    "Para diminuir a tensão no aparelho",
-                    "Para reduzir o consumo de energia"
-                ],
-                answer: 0,
-                explanation: "Cabos mais grossos têm menor resistência e podem transportar correntes maiores sem aquecer excessivamente, prevenindo riscos de incêndio."
-            },
-            {
-                question: "Qual é a potência dissipada por um resistor de 10Ω quando percorrido por uma corrente de 3A?",
-                options: [
-                    "3,3 W",
-                    "30 W",
-                    "90 W",
-                    "900 W"
-                ],
-                answer: 2,
-                explanation: "P = I² × R = 3² × 10 = 9 × 10 = 90 W."
-            },
-            {
-                question: "Qual é a diferença principal entre potência nominal e potência real de um aparelho?",
-                options: [
-                    "A potência nominal é medida em condições ideais, a real em uso normal",
-                    "São conceitos idênticos",
-                    "A potência real é sempre maior que a nominal",
-                    "A potência nominal considera apenas a energia reativa"
-                ],
-                answer: 0,
-                explanation: "A potência nominal é especificada pelo fabricante em condições padrão, enquanto a potência real pode variar conforme as condições de uso."
-            },
-            {
-                question: "Qual é a corrente que passa por um ferro elétrico de 1100W ligado em 220V?",
-                options: [
-                    "0,2 A",
-                    "2 A",
-                    "5 A",
-                    "20 A"
-                ],
-                answer: 2,
-                explanation: "P = V × I → I = P/V = 1100/220 = 5 A."
-            },
-            {
-                question: "Qual é a resistência de um chuveiro elétrico de 5500W em 220V?",
-                options: [
-                    "4 Ω",
-                    "8,8 Ω",
-                    "25 Ω",
-                    "40 Ω"
-                ],
-                answer: 1,
-                explanation: "P = V²/R → R = V²/P = 220²/5500 = 48400/5500 = 8,8 Ω."
-            },
-            {
-                question: "Qual é o consumo mensal de um ventilador de 50W ligado 8 horas por dia?",
-                options: [
-                    "1,2 kWh",
-                    "4,8 kWh",
-                    "12 kWh",
-                    "48 kWh"
-                ],
-                answer: 2,
-                explanation: "50W = 0,05kW. Tempo = 8h/dia × 30dias = 240h. Energia = 0,05 × 240 = 12 kWh."
-            },
-            {
-                question: "Qual é a potência de um aparelho que consome 2A em 127V?",
-                options: [
-                    "63,5 W",
-                    "127 W",
-                    "254 W",
-                    "508 W"
-                ],
-                answer: 2,
-                explanation: "P = V × I = 127 × 2 = 254 W."
-            },
-            {
-                question: "Qual é a vantagem de usar tensões mais altas na transmissão de energia elétrica?",
-                options: [
-                    "Permite usar fios mais finos para a mesma potência",
-                    "Aumenta a segurança contra choques elétricos",
-                    "Reduz a necessidade de transformadores",
-                    "Diminui a potência transmitida"
-                ],
-                answer: 0,
-                explanation: "Para uma dada potência (P = V × I), tensões mais altas permitem correntes menores, reduzindo as perdas por efeito Joule e permitindo fios mais finos."
-            },
-            {
-                question: "Qual é a eficiência aproximada de uma lâmpada fluorescente compacta (LFC)?",
-                options: [
-                    "5-10%",
-                    "25-30%",
-                    "50-60%",
-                    "75-80%"
-                ],
-                answer: 1,
-                explanation: "Lâmpadas fluorescentes têm eficiência de 25-30%, significativamente melhor que incandescentes (5-10%) mas inferior aos LEDs (até 80%)."
-            },
-            {
-                question: "Qual é a potência dissipada por um resistor de 100Ω ligado a uma bateria de 12V?",
-                options: [
-                    "0,12 W",
-                    "1,44 W",
-                    "12 W",
-                    "144 W"
-                ],
-                answer: 1,
-                explanation: "P = V²/R = 12²/100 = 144/100 = 1,44 W."
-            },
-            {
-                question: "Qual é o tempo máximo que um aquecedor de 1500W pode funcionar em uma tomada de 10A/127V sem risco?",
-                options: [
-                    "Não há limite de tempo",
-                    "Até 1 hora contínua",
-                    "Até 8 horas contínuas",
-                    "Depende da resistência do aquecedor"
-                ],
-                answer: 0,
-                explanation: "1500W em 127V consome I = P/V = 1500/127 ≈ 11,8A, que excede a capacidade da tomada de 10A. Portanto, não deve ser usado nesta tomada."
-            },
-            {
-                question: "Qual é a corrente que passa por três lâmpadas de 60W cada, ligadas em paralelo em 120V?",
-                options: [
-                    "0,5 A",
-                    "1,5 A",
-                    "3 A",
-                    "6 A"
-                ],
-                answer: 1,
-                explanation: "Cada lâmpada consome I = P/V = 60/120 = 0,5A. Em paralelo, a corrente total é a soma: 0,5 × 3 = 1,5A."
-            },
-            {
-                question: "Qual é a resistência equivalente de três resistores de 30Ω ligados em paralelo?",
-                options: [
-                    "10 Ω",
-                    "30 Ω",
-                    "60 Ω",
-                    "90 Ω"
-                ],
-                answer: 0,
-                explanation: "Resistência em paralelo: 1/R = 1/30 + 1/30 + 1/30 = 3/30 = 1/10 → R = 10Ω."
-            },
-            {
-                question: "Qual é a potência total consumida por três lâmpadas de 40W, 60W e 100W ligadas em paralelo a 120V?",
-                options: [
-                    "40 W",
-                    "60 W",
-                    "100 W",
-                    "200 W"
-                ],
-                answer: 3,
-                explanation: "Em paralelo, as potências se somam: 40 + 60 + 100 = 200W."
-            },
-            {
-                question: "Qual é a principal razão para a perda de energia na transmissão de eletricidade?",
-                options: [
-                    "Efeito Joule nos cabos de transmissão",
-                    "Vazamento de corrente para o ar",
-                    "Absorção de energia pelos postes",
-                    "Conversão espontânea em energia luminosa"
-                ],
-                answer: 0,
-                explanation: "As principais perdas ocorrem pelo efeito Joule (P = I²R) nos cabos, que transforma parte da energia elétrica em calor."
+                explanation: "Kant argumenta que os pensamentos (conceitos) sem conteúdo (dados da sensibilidade) são vazios, pois não se referem a nenhum objeto da experiência, não resultando em conhecimento."
             }
         ];
 
-        // Variáveis do jogo
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let timeLeft = 30;
-        let timer;
-        let shuffledQuestions = [];
-        let selectedOption = null;
-        let answerSubmitted = false;
-
         // Elementos do DOM
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
         const questionElement = document.getElementById('question');
         const optionsElement = document.getElementById('options');
         const feedbackElement = document.getElementById('feedback');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const correctAnswerElement = document.getElementById('correct-answer');
+        const explanationElement = document.getElementById('explanation');
         const nextButton = document.getElementById('next-btn');
-        const scoreElement = document.getElementById('score');
-        const finalScoreElement = document.getElementById('final-score');
-        const totalQuestionsElement = document.getElementById('total-questions');
-        const finalScoreContainer = document.getElementById('final-score-container');
-        const questionContainer = document.getElementById('question-container');
         const progressBar = document.getElementById('progress-bar');
-        const timerElement = document.getElementById('timer');
-        const restartButton = document.getElementById('restart-btn');
+        const questionCounter = document.getElementById('question-counter');
+        const scoreValue = document.getElementById('score-value');
+        const resultMessage = document.getElementById('result-message');
+        const startButton = document.querySelector('.start-btn');
+        const restartButton = document.querySelector('.restart-btn');
 
-        // Função para embaralhar array (Fisher-Yates)
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
+        // Event Listeners
+        startButton.addEventListener('click', startQuiz);
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', restartQuiz);
 
-        // Iniciar o jogo
-        function startGame() {
-            score = 0;
+        // Iniciar o quiz
+        function startQuiz() {
+            startScreen.classList.add('hide');
+            quizScreen.classList.remove('hide');
             currentQuestionIndex = 0;
-            scoreElement.textContent = score;
-            shuffledQuestions = shuffleArray([...questions]).slice(0, 10); // Seleciona 10 perguntas aleatórias
-            totalQuestionsElement.textContent = shuffledQuestions.length;
-            
-            finalScoreContainer.style.display = 'none';
-            questionContainer.style.display = 'block';
-            
-            loadQuestion();
-            startTimer();
+            score = 0;
+            showQuestion();
         }
 
-        // Carregar pergunta
-        function loadQuestion() {
-            resetState();
-            const currentQuestion = shuffledQuestions[currentQuestionIndex];
+        // Mostrar a pergunta atual
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionElement.textContent = question.question;
             
-            // Atualizar barra de progresso
-            const progress = ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
+            // Atualizar contador de progresso
+            const progress = ((currentQuestionIndex) / questions.length) * 100;
             progressBar.style.width = `${progress}%`;
+            questionCounter.textContent = `Pergunta ${currentQuestionIndex + 1} de ${questions.length}`;
             
-            // Exibir pergunta
-            questionElement.textContent = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
+            // Limpar opções anteriores
+            optionsElement.innerHTML = '';
             
-            // Embaralhar e exibir opções
-            const shuffledOptions = shuffleArray([...currentQuestion.options]);
-            
-            shuffledOptions.forEach((option, index) => {
-                const button = document.createElement('div');
-                button.classList.add('option');
-                button.textContent = option;
-                button.dataset.index = currentQuestion.options.indexOf(option); // Guarda o índice original
-                button.addEventListener('click', () => selectOption(button));
-                optionsElement.appendChild(button);
+            // Adicionar novas opções
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(optionElement, index));
+                optionsElement.appendChild(optionElement);
             });
-        }
-
-        // Resetar estado para nova pergunta
-        function resetState() {
-            answerSubmitted = false;
-            selectedOption = null;
-            timeLeft = 30;
-            timerElement.textContent = timeLeft;
-            clearInterval(timer);
-            startTimer();
             
-            while (optionsElement.firstChild) {
-                optionsElement.removeChild(optionsElement.firstChild);
-            }
-            
-            feedbackElement.textContent = '';
+            // Resetar feedback e botão
             feedbackElement.className = 'feedback';
-            nextButton.style.display = 'none';
+            feedbackElement.style.display = 'none';
+            nextButton.disabled = true;
+            selectedOption = null;
         }
 
-        // Selecionar opção
-        function selectOption(button) {
-            if (answerSubmitted) return;
+        // Selecionar uma opção
+        function selectOption(optionElement, optionIndex) {
+            if (selectedOption !== null) return;
             
-            // Desselecionar opção anterior se existir
-            if (selectedOption) {
-                selectedOption.classList.remove('selected');
+            selectedOption = optionIndex;
+            const question = questions[currentQuestionIndex];
+            
+            // Marcar a opção selecionada
+            optionElement.classList.add('selected');
+            
+            // Verificar se a resposta está correta
+            const isCorrect = optionIndex === question.answer;
+            
+            // Atualizar pontuação
+            if (isCorrect) {
+                score++;
             }
             
-            // Selecionar nova opção
-            selectedOption = button;
-            button.classList.add('selected');
+            // Mostrar feedback
+            showFeedback(isCorrect, question);
+            
+            // Habilitar botão de próxima pergunta
+            nextButton.disabled = false;
         }
 
-        // Verificar resposta
-        function checkAnswer() {
-            if (!selectedOption || answerSubmitted) return;
+        // Mostrar feedback
+        function showFeedback(isCorrect, question) {
+            feedbackElement.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackElement.style.display = 'block';
             
-            answerSubmitted = true;
-            clearInterval(timer);
+            if (isCorrect) {
+                feedbackTitle.textContent = 'Resposta Correta!';
+                feedbackTitle.style.color = 'var(--correct-color)';
+            } else {
+                feedbackTitle.textContent = 'Resposta Incorreta';
+                feedbackTitle.style.color = 'var(--incorrect-color)';
+            }
             
-            const currentQuestion = shuffledQuestions[currentQuestionIndex];
-            const selectedAnswer = parseInt(selectedOption.dataset.index);
-            const correctAnswer = currentQuestion.answer;
+            correctAnswerElement.textContent = `Resposta correta: ${question.options[question.answer]}`;
+            explanationElement.textContent = question.explanation;
             
-            // Marcar opções
-            const optionElements = document.querySelectorAll('.option');
-            optionElements.forEach(option => {
-                const optionIndex = parseInt(option.dataset.index);
-                if (optionIndex === correctAnswer) {
+            // Destacar opções corretas/incorretas
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === question.answer) {
                     option.classList.add('correct');
-                } else if (option === selectedOption && optionIndex !== correctAnswer) {
+                } else if (index === selectedOption && !isCorrect) {
                     option.classList.add('incorrect');
                 }
             });
-            
-            // Atualizar pontuação e feedback
-            if (selectedAnswer === correctAnswer) {
-                score++;
-                scoreElement.textContent = score;
-                feedbackElement.textContent = `✅ Correto! ${currentQuestion.explanation}`;
-                feedbackElement.classList.add('correct');
-            } else {
-                feedbackElement.textContent = `❌ Incorreto. A resposta correta é: ${currentQuestion.options[correctAnswer]}. ${currentQuestion.explanation}`;
-                feedbackElement.classList.add('incorrect');
-            }
-            
-            nextButton.style.display = 'block';
         }
 
         // Próxima pergunta
         function nextQuestion() {
             currentQuestionIndex++;
             
-            if (currentQuestionIndex < shuffledQuestions.length) {
-                loadQuestion();
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
             } else {
-                endGame();
+                showResult();
             }
         }
 
-        // Finalizar jogo
-        function endGame() {
-            clearInterval(timer);
-            questionContainer.style.display = 'none';
-            finalScoreContainer.style.display = 'block';
-            finalScoreElement.textContent = score;
-        }
-
-        // Temporizador
-        function startTimer() {
-            timerElement.textContent = timeLeft;
-            timer = setInterval(() => {
-                timeLeft--;
-                timerElement.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    if (!answerSubmitted) {
-                        checkAnswer(); // Submete automaticamente quando o tempo acaba
-                    }
-                }
-            }, 1000);
-        }
-
-        // Event listeners
-        nextButton.addEventListener('click', nextQuestion);
-        optionsElement.addEventListener('click', (e) => {
-            if (e.target.classList.contains('option') && !answerSubmitted) {
-                checkAnswer();
+        // Mostrar resultado final
+        function showResult() {
+            quizScreen.classList.add('hide');
+            resultScreen.classList.remove('hide');
+            
+            scoreValue.textContent = score;
+            
+            // Mensagem personalizada baseada na pontuação
+            if (score === questions.length) {
+                resultMessage.textContent = 'Excelente! Você demonstrou um conhecimento excepcional sobre a filosofia kantiana.';
+            } else if (score >= questions.length * 0.7) {
+                resultMessage.textContent = 'Muito bom! Você tem um bom entendimento dos conceitos kantianos.';
+            } else if (score >= questions.length * 0.4) {
+                resultMessage.textContent = 'Bom esforço! Reveja alguns conceitos para melhorar seu entendimento.';
+            } else {
+                resultMessage.textContent = 'Continue estudando! A filosofia kantiana é complexa e requer atenção aos detalhes.';
             }
-        });
-        restartButton.addEventListener('click', startGame);
+        }
 
-        // Iniciar o jogo quando a página carrega
-        window.addEventListener('load', startGame);
+        // Reiniciar o quiz
+        function restartQuiz() {
+            resultScreen.classList.add('hide');
+            startScreen.classList.remove('hide');
+        }
     </script>
 </body>
 </html>
